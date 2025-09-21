@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Internee.pk | Pakistan's Virtual Internship Platform</title>
+        <link rel="icon" href="../assets/icon.png" />
+        <link rel="stylesheet" href="../styles.css" />
+    </head>
+    <body>
+        <header class="mainheader">
+            <img id="logoImage" src="../assets/logo.png" alt="Internee.pk Logo">
+            <ul class="pages">
+                <li><a href="#" class="nav-item active" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-item" data-page="internship">Internship</a></li>
+                <li><a href="#" class="nav-item" data-page="GradProg">Graduate Program</a></li>
+                <li><a href="#" class="nav-item" data-page="StAmbassador">Student Ambassador</a></li>
+            </ul>
+            <div class="hbtns" id="headBtns">
+                <button class="jpbtn">Job Portal</button>
+                <button class="sbtn">Sign In</button>
+                <button class="dbtn hidden" id="dshbtn">Dashboard</button>
+            </div>
+            <div class="ptbtn">
+                <button class="profile hidden" id="prbtn">👨‍🎓</button>
+                <button class="thtgl" id="thtgl">🌙</button>
+            </div>
+        </header>
+
+        <div id="spinner" class="spinner hidden"></div>
+
+        <div class="background">
+            <div class="blob blob1"></div>
+            <div class="blob blob2"></div>
+        </div>
+
+        <div class="prof hidden">
+            <div class="cols">
+                <div class="icon">👨‍🎓</div>
+                <p>Email</p>
+            </div>
+            <div class="cols">
+                <div class="icon"><img src="../assets/settings.png"></div>
+                <p>Manage Account</p>
+            </div>
+            <div class="cols">
+                <div class="icon"><img src="../assets/logout.png"></div>
+                <p>Sign Out</p>
+            </div>
+        </div>
+        
+        <div class="overlay hidden"></div>
+        <div class="settings-container hidden" id="settingsContainer">
+            <aside class="side-nav">
+                <div class="heading">
+                    <h2>Account</h2>
+                    <p>Manage your Account Info</p>
+                </div>
+                <ul>
+                    <li><button class="nav-btn active" data-target="profile">👨‍🎓 Profile</button></li>
+                    <li><button class="nav-btn" data-target="security">🔐 Security</button></li>
+                </ul>
+            </aside>
+            <main class="main-content">
+                <button class="close-btn" id="closeSettings">✖️</button>
+                <section class="settings-section" id="profile">
+                    <h1>Profile Details</h1>
+                    <div class="profile-header">
+                        <div class="avatar">👨‍🎓</div>
+                        <button class="link-btn" id="updateProfileBtn">Update Profile</button>
+                    </div>
+                    <div class="section-group">
+                        <h2>Email Addresses</h2>
+                        <ul class="email-list" id="emailList"><!-- JS inject <li> items --></ul>
+                        <button class="add-btn" id="addEmailBtn">+ Add Email Address</button>
+                    </div>
+                    <div class="section-group">
+                        <h2>Connected Accounts</h2>
+                        <ul class="account-list" id="accountList"><!-- Future Connected Account Entries --></ul>
+                        <button class="add-btn" id="connectAccountBtn">+ Connect Account</button>
+                    </div>
+                </section>
+                <section id="security" class="settings-section hidden">
+                    <h1>Security Settings</h1>
+                    <div class="section-group">
+                        <label for="currentPwd">Current Password</label>
+                        <div class="pwd-field">
+                            <input type="password" id="currentPwd" value="hunter2" readonly/>
+                            <button type="button" class="toggle-pwd" data-target="currentPwd" aria-label="Show/Hide Current Password">🙂</button>
+                        </div>
+                    </div>
+                    <div class="section-group">
+                        <label for="newPwd">New Password</label>
+                        <div class="pwd-field">
+                            <input type="password" id="newPwd" placeholder="Enter New Password"/>
+                            <button type="button" class="toggle-pwd" data-target="newPwd" aria-label="Show/Hide New Password">🙂</button>
+                        </div>
+                    </div>
+                    <div class="section-group">
+                        <label for="confirmPwd">Confirm new password</label>
+                        <div class="pwd-field">
+                            <input type="password" id="confirmPwd" placeholder="Re-enter new password" />
+                            <button type="button" class="toggle-pwd" data-target="confirmPwd" aria-label="Show/Hide Confirm Password">🙂</button>
+                        </div>
+                    </div>
+                    <button class="update-btn" id="updatePwdBtn">Update Password</button>
+                </section>
+            </main>
+        </div>
+        
+        <!-- Content Sections -->
+        <div id="home" class="page">
+            <div class="div1">
+                <div class="div1a">
+                    <h1>Looking for<br>Dream Internship?</h1>
+                    <br><p>
+                        Internee.pk kickstart student's tech careers with first<br>internships, 
+                        providing industry exposure, practical skills,<br>and networking opportunities.
+                    </p><br>
+                    <div class="hbtns" id="bodyBtns">
+                        <button class="jpbtn">Our Job Portal</button>
+                        <button class="bcont">Sign In
+                            <div class="icon">
+                                <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+                                </svg>
+                            </div>
+                        </button>
+                        <button class="bcont hidden" id="dshbtn" >Dashboard
+                            <div class="icon">
+                                <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="div1b"><img src="../assets/homeImg.png"/></div>
+            </div>
+        </div>
+        
+        <div id="internship" class="page hidden">
+            <h1>Internship Opportunities</h1>
+            <p>Explore internships tailored for students and fresh grads.</p>
+        </div>
+        
+        <div id="GradProg" class="page hidden">
+            <div class="div3">
+                <div class="div3a">
+                    <h1>Graduate Programs</h1>
+                    <p>Explore our comprehensive graduate programs designed to advance your career and expand<br>your knowledge.</p>
+                </div>
+                <div class="div3b">
+                    <h2>Explore Categories</h2>
+                    <div class="cards">
+                        <div class="card1">
+                            <div class="cardimg"></div>
+                            <div class="content">
+                                <h2>Health Care</h2>
+                                <p>
+                                    Step into the world where every second counts and lives are changed. 
+                                    Whether it's assisting in patient care, supporting medical research, 
+                                    or exploring health tech innovation our internships put you at the 
+                                    heart of the action. Join the frontlines of impact and make your mark 
+                                    in the future of healthcare.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card2">
+                            <div class="cardimg"></div>
+                            <div class="content">
+                                <h2>Engineering</h2>
+                                <p>
+                                    Enter the realm where ideas turn into structures, circuits, and code. 
+                                    From building the future to solving real-world challenges, our engineering 
+                                    internships place you in the driver’s seat of innovation. Whether it’s civil, 
+                                    electrical, mechanical, or software get ready to design, build, and disrupt.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card3">
+                            <div class="cardimg"></div>
+                            <div class="content">
+                                <h2>Information Technology</h2>
+                                <p>
+                                    Dive into the digital battlefield where code is power and innovation never 
+                                    sleeps. From software development to cybersecurity, data analytics to cloud 
+                                    computing our IT internships equip you to lead the tech revolution. Step in, 
+                                    gear up, and shape the future of technology.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="div3c">
+                    <section class="health hidden">
+                        <button class="back-btn">← Back to Categories</button>
+                        <div class="maindiv">
+                            <h1>Health Care</h1>
+                            <p>
+                                Step into the world where every second counts and lives are changed. 
+                                Whether it's assisting in patient care, supporting medical research, 
+                                or exploring health tech innovation our internships put you at the 
+                                heart of the action. Join the frontlines of impact and make your 
+                                mark in the future of healthcare.
+                            </p>
+                        </div>
+                        <div class="subcat">
+                            <h2>Explore Internship Subcategories</h2>
+                            <p>Discover opportunities under the Health Care category.</p>
+                        </div>
+                    </section>
+                    <section class="eng hidden">
+                        <button class="back-btn">← Back to Categories</button>
+                        <div class="maindiv">
+                            <h1>Engineering</h1>
+                            <p>Enter the realm where ideas turn into structures, circuits, and code. 
+                                From building the future to solving real-world challenges, our engineering 
+                                internships place you in the driver’s seat of innovation. Whether it’s civil, 
+                                electrical, mechanical, or software get ready to design, build, and disrupt.
+                            </p>
+                        </div>
+                        <div class="subcat">
+                            <h2>Explore Internship Subcategories</h2>
+                            <p>Discover opportunities under the Engineering category.</p>
+                        </div>
+                    </section>
+                    <section class="infotech hidden">
+                        <button class="back-btn">← Back to Categories</button>
+                        <div class="maindiv">
+                            <h1>Information Technology</h1>
+                            <p>Dive into the digital battlefield where code is power and innovation never sleeps. 
+                                From software development to cybersecurity, data analytics to cloud computing our 
+                                IT internships equip you to lead the tech revolution. Step in, gear up, and shape 
+                                the future of technology.
+                            </p>
+                        </div>
+                        <div class="subcat">
+                            <h2>Explore Internship Subcategories</h2>
+                            <p>Discover opportunities under the Information Technology category.</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        
+        <div id="StAmbassador" class="page hidden">
+            <div class="div4">
+                <div class="div4a">
+                    <div class="bgimg"></div>
+                    <h1>Internee.pk<br>Student Ambassadors</h1>
+                </div>
+                <div class="div4b">
+                    <div class="gst">
+                        <div class="cont">
+                            <h2>Become a Student Ambassador</h2>
+                            <p>
+                                Join our global community of students who are passionate about 
+                                building AI-driven solutions with<br>Microsoft technology. Accelerate 
+                                innovation and grow the skills you need to have greater impact in the 
+                                projects<br>and communities that matter to you.
+                            </p>
+                        </div>
+                        <button>Get Started →</button>
+                    </div>
+                    <div class="unpo">
+                        <div class="buildingimg"><img src="../assets/unpo.png" alt="Unlock your Potential"></div>
+                        
+                        <div class="ucont">
+                            <h1>Unlock Your<br>Potential</h1>
+                            <ul>
+                                <li>Discover new opportunities and enhance your skills.</li>
+                                <li>Gain real-world experience with hands-on projects.</li>
+                                <li>Connect with a network of like-minded individuals.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="div4c">
+                    <div class="tabs">
+                        <div class="inoc"><img src="../assets/getst.png" alt="Get Started"></div>
+                        <div class="desc">
+                            <h1>Get Started</h1>
+                            <p>Become a Student Ambassador</p>
+                        </div>
+                    </div>
+                    <div class="tabs">
+                        <div class="inoc"><img src="../assets/community.png" alt="Community"></div>
+                        <div class="desc">
+                            <h1>Community</h1>
+                            <p>Explore Student Ambassador profiles</p>
+                        </div>
+                    </div>
+                    <div class="tabs">
+                        <div class="inoc"><img src="../assets/competition.png" alt="Startup Competition"></div>
+                        <div class="desc">
+                            <h1>Startup Competition</h1>
+                            <p>Student competition for AI startups</p>
+                        </div>
+                    </div>
+                    <div class="tabs">
+                        <div class="inoc"><img src="../assets/founders.png" alt="Founders Hub"></div>
+                        <div class="desc">
+                            <h1>Founders Hub</h1>
+                            <p>A platform for entrepreneurs<br>at any stage</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="div4d">
+                    <h2>Why you should join</h2>
+                    <div class="rtabs">
+                        <div class="rsns">
+                            <img src="../assets/learngrow.png" alt="Learn and Grow">
+                            <h2>Learn and Grow</h2>
+                            <p>Access exclusive learning resources and certifications to build your technical skills.</p>
+                        </div>
+                        <div class="rsns">
+                            <img src="../assets/community.png" alt="Build Community">
+                            <h2>Build Community</h2>
+                            <p>Connect with fellow students and mentors from around the world.</p>
+                        </div>
+                        <div class="rsns">
+                            <img src="../assets/solutions.png" alt="Create Solutions">
+                            <h2>Create Solutions</h2>
+                            <p>Work on real projects using cutting-edge Internee's technologies.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer> © Sumaira Bibi. </footer>
+        <script src="../script.js"></script>
+    </body>
+</html>
