@@ -1,0 +1,659 @@
+/*********************************** THEMING *********************************/
+:root {
+    --bg: #fff;
+    --txt-color: #000;
+    --hf-bg: rgba(255,255,255);
+    --hf-border:  #000;
+    --error-border: rgba(209, 75, 75, 0.541);
+    --error-bg: rgba(209, 75, 75, 0.178);
+    --div3a-pcolor: darkslategray;
+    --div4b-bg: rgb(243, 241, 241);
+    --div4c-bg: rgb(234, 232, 232);
+}
+
+body.dark {
+    --bg: #000;
+    --txt-color: #fff;
+    --hf-bg: black;
+    --hf-border: #fff;
+    --error-border: rgb(246, 49, 49);
+    --error-bg: #fae1e1;
+    --div3a-pcolor: gainsboro;
+    --div4b-bg: #191a19;
+    --div4c-bg: #191a19;
+}
+
+body {
+  background: var(--bg);
+  color: var(--txt-color);
+  font-family: Arial, sans-serif;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.5; min-height: 100vh;
+  transition: var(--bg) 0.3s, color 0.3s;
+}
+
+/*********************************** GLOBAL RESET, HEADER AND FOOTER *********************************/
+* { box-sizing: border-box; margin: 0;  padding: 0; }
+html, body { font-size: 100%; }
+
+.mainheader{ 
+  width: 100%; z-index: 100;
+  padding: 0.2rem; position: fixed;
+  display:flex; top: 0;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: 0 1px 2px var(--hf-border);
+  background-color: var(--hf-bg);
+
+  img {width: 250px; height: 60px;}
+  button {font-size: medium;}
+}
+footer {
+  bottom: 0; width: 100%;
+  justify-content: start; position: fixed;
+  box-shadow: 0 1px 4px var(--hf-border);
+  background: var(--hf-bg);
+}
+
+/*********************************** HEADER {<ul>, div.hbtns, div.ptbtn} *********************************/
+.pages {
+  display: flex;  flex-direction: row;
+  gap: 20px; list-style: none;
+  justify-content: space-between;
+
+  a {text-decoration: none; color: var(--txt-color);}
+  a:hover {color:#00a516;}
+  .nav-item.active {color: green;}
+}
+
+.hbtns {
+  display: flex; gap: 10px;
+  width: 25%; height: 100%;
+
+  button {
+    width: 100%; height: 100%;
+    padding: 10px; cursor: pointer;
+    background-color: green;
+    color: white; border: none;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px var(--txt-color);
+  }
+  button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid green;
+  }
+}
+
+.ptbtn{
+  display: flex;  gap: 10px;
+  button {
+    border: none; cursor: pointer;
+    background: none; font-size: 1.7rem;
+  }
+  button:hover {text-shadow: 0 1px 4px var(--txt-color);}
+}
+
+/*********************************** BACKGROUND *********************************/
+.background {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;  height: 100%;
+  overflow: hidden; z-index: -1;
+  
+  .blob {
+    position: absolute;
+    border-radius: 50%; filter: blur(100px);
+    background: #28A745; opacity: 0.3;
+  }
+  
+  /* 3. tweak each blob */
+  .blob1 { width: 600px; height: 600px; top: -200px; left: -200px; }
+  .blob2 { width: 500px; height: 500px; bottom: -150px; right: -150px; }
+}
+
+/*********************************** SPINNER *********************************/
+.spinner {
+  justify-self: center;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #00a516;
+  border-radius: 50%; position: fixed;
+  width: 40px;  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/************************* ONCLICK PROFILE BUTTON OF HEADER ********************/
+.prof {
+  display: block; position: fixed;
+  background: var(--div4b-bg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.301);
+  width: 300px; height: 150px;
+  border-radius: 12px; z-index: 101;
+  transform: translate(290%, 40%);
+  align-content: center;
+  transition: all 0.3s ease;
+
+  .cols:first-child {cursor: default;}
+  .cols {
+    display: flex;
+    height: 40px;
+    border-bottom: 1px solid teal;
+    align-items: center; cursor: pointer;
+    .icon {
+      margin-left: 8%; font-size: 1.3rem;
+      img {margin-top: 40%; }
+    }
+    p { margin-left: 5%; }
+  }
+  :hover { background: gainsboro; }
+}
+
+/*********************************** ONCLICK MANAGE PROFILE OF .PROF *********************************/
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 101;
+}
+
+.settings-container {
+  display: flex; max-width: 1000px;
+  margin: 2rem auto; background: #fff;
+  border-radius: 8px; overflow: auto;
+  z-index: 102; position: fixed; inset: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.658);
+  border-radius: 12px; color: black;
+
+  .side-nav {
+    padding: 3% 2%; width: 40%;
+    width: 200px; background: #fafafa;
+    border-right: 1px solid #e0e0e0; color: black;
+    .heading { margin-bottom: 10%; p {font-size: 0.8rem;} }
+    ul {
+      list-style: none;
+      .nav-btn {
+        border-radius: 8px; margin-bottom: 5%;
+        display: block; width: 100%;
+        padding: 0.6rem; text-align: left;
+        background: none; border: none;
+        font-size: 1rem; cursor: pointer;
+        color: #555; transition: background 0.2s;
+      }
+      .nav-btn:hover {background: #d1d0d0;}
+      .nav-btn.active { background: #dedcdc; color: #111; font-weight: bold; }
+    }
+  }
+
+  /* Main content area */
+  .main-content {
+    flex: 1; padding: 2rem; color: black;
+    .close-btn {
+      position: absolute; top: 0.8rem;
+      right: 0.8rem; background: none;
+      border: none; font-size: 1rem;
+      cursor: pointer; padding: 0.3%;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    .close-btn:hover {background: rgb(228, 228, 228); box-shadow: 0 1px 4px gray;}
+    .settings-section + .settings-section { margin-top: 2rem; }
+    h1 {margin-bottom: 3%;}
+    /* Profile header */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      .avatar { font-size: 2.5rem; margin-right: 1rem; }
+      .link-btn {
+        background: none; border: none;
+        color: green; cursor: pointer;
+        font-size: 1rem; text-decoration: underline;
+      }
+      .link-btn:hover { text-decoration: none; }
+    }
+
+    /* Sections */
+    .section-group {
+      margin-bottom: 2rem;
+      h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+      
+      /* Email & account lists */
+      .email-list, .account-list { 
+        list-style: none; 
+        li { display: flex; align-items: center; padding: 0.5rem 0; }
+      }
+      .email-list li + li, .account-list li + li { border-top: 1px solid #ececec; }
+      .email-list li .tag {
+        margin-left: auto;
+        background: green;
+        color: #fff;
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+      }
+      .add-btn {
+        background: none; border: 1px solid green;
+        color: green; padding: 0.5rem 1rem;
+        border-radius: 4px; font-size: 0.9rem;
+        cursor: pointer; transition: background 0.2s, color 0.2s;
+      }
+      .add-btn:hover { background: green; color: #fff; }
+    }
+
+    /* SECURITY SECTION STYLES */
+    .pwd-field {
+      position: relative;
+      margin-top: 0.25rem;
+      input {
+        width: 100%; font-size: 1rem;
+        padding: 0.5rem 2.5rem 0.5rem 0.5rem;
+        border: 1px solid #ccc; border-radius: 4px;
+      }
+      .toggle-pwd {
+        position: absolute; right: 0.5rem;
+        top: 50%; transform: translateY(-50%);
+        background: none; border: none; cursor: pointer;
+        font-size: 1.1rem; color: #555; padding: 0;
+      }
+      .toggle-pwd:hover { text-shadow: 0 1px 10px gray; }
+    }
+
+    .update-btn {
+      background: green; color: #fff;
+      border: none; padding: 0.75rem 1.5rem;
+      border-radius: 4px; font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .update-btn:hover { background: green; }
+  }
+}
+
+/*********************************** .PAGE IS LINKED IS LINKED TO .PAGES OF HEADER <UL> *********************************/
+.hidden {display: none !important;}
+.page {width:100%; overflow: hidden;}
+
+/*********************************** HOME OF HEADER *********************************/
+.div1 {
+  width: 90%;  display: flex;
+  margin-top: 12%;  justify-self: center;
+
+  .div1a, .div1b { width: 50%; gap: 20px; align-content: center; }
+  h1 {font-size: 2.5rem; line-height: 1;}
+  p { font-size: 1.3rem; }
+  img { width: 95%; height: 95%; }
+  .hbtns {
+    display: flex; width: 60%; 
+    height: auto; gap: 15px;
+    button { padding: 15px; font-size: medium; }
+    button:hover { background-color: #196B24; color: white; }
+
+    .bcont {
+      background: green; color: white;
+      border-radius: 10px; border: none;
+      letter-spacing: 0.05em; display: flex;
+      align-items: center; box-shadow: inset 0 0 1.6em -0.6em green; 
+      box-shadow: 0 1px 2px var(--txt-color);
+      overflow: hidden; position: relative; cursor: pointer;
+
+      .icon {
+        background: white; margin-left: 1em;
+        position: absolute; display: flex;
+        align-items: center; justify-content: center;
+        height: 2.4em; width: 2.2em; border-radius: 10px;
+        box-shadow: 0.1em 0.1em 0.6em 0.2em green; 
+        right: 0.3em; transition: all 0.3s;
+        svg {width: 1.1em; transition: transform 0.3s; color: green;}
+      }
+    }
+
+    .bcont:hover { .icon { width: calc(100% - 0.6em); svg {transform: translateX(0.1em);} } }
+    .bcont:active .icon {transform: scale(0.95);}
+  }
+}
+
+/*********************************** INTERNSHIP OF HEADER *********************************/
+
+/*********************************** GRADUATE PROGRAM OF HEADER *********************************/
+.div3 {
+  width: 100%; margin-top: 6%;
+  text-align: center; justify-self: center;
+
+  .div3a {
+    margin-bottom: 3%;
+    h1 { font-size: 3rem; }
+    p { font-size: 1.2rem; color: var(--div3a-pcolor);}
+  }
+
+  .div3b {
+    .cards {
+      gap: 1rem; width: 82%;
+      display: flex; margin-top: 2%;
+      text-align: center; justify-self: center;
+      justify-content: space-evenly;
+
+      .card1, .card2, .card3 {
+        width: 30%; border-radius: 3%;
+        background: var(--hf-bg);
+        cursor: pointer; overflow: hidden;
+        box-shadow: 0 1px 5px gray;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
+        .cardimg {
+          display: block;
+          width: 100%; height: 225px;
+          border-radius: 3% 3% 0 0;
+          transition: filter 0.3s ease;
+        }
+
+        .content {
+          margin: 4%; height: 50%;
+          transition: color 0.3s ease;
+          h2 { font-size: 1.5rem; margin-bottom: 2%; }
+          p { font-size: 0.9rem; line-height: 1.5;}
+        }
+      }
+
+      .card1 { .cardimg {background-image: url(assets/doctor.png); background-repeat: round;} }
+      .card2 { .cardimg {background-image: url(assets/eng.png); background-repeat: round;} }
+      .card3 { .cardimg {background-image: url(assets/infotech.png); background-repeat: round;} }
+
+      .card1:hover, .card2:hover, .card3:hover {
+        transform: scale(1.1, 1.1); border-radius: 3%;
+        box-shadow: 0 1px 5px gray;
+        h2 {color: green;}
+        .cardimg {filter: brightness(80%);}
+      }
+    }
+  }
+
+  .div3c {
+    margin-top: 8%;
+    
+    button {
+      display: inline-flex; align-items: center;
+      background: transparent;
+      border: 2px solid green; color: green;
+      padding: 0.5rem 1rem; font-size: 1rem;
+      font-weight: bold; border-radius: 4px;
+      cursor: pointer; margin-bottom: 1.5rem;
+      transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      background-color: green; color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .maindiv {
+      background: linear-gradient(135deg, #0d3a15 0%, #12511d 50%, #0d3a15 100%);
+      width: 95%; height: 450px;
+      color: white; text-align: center;
+      align-content: center; justify-self: center;
+      padding: 5rem 2rem;
+      border-radius: 40px;
+
+      h1 { font-size: 4rem; margin-bottom: 1rem; }
+      p { width: 700px; margin: 0 auto; font-size: 1.2rem; }
+    }
+
+    .subcat {
+      padding: 3rem 1rem;
+      text-align: center;
+
+      h2 { font-size: 2.2rem; color: var(--txt-color); margin-bottom: 0.5rem; }
+      p { font-size: 1.2rem; color: var(--div3a-pcolor); }
+    }
+  }
+}
+
+/*********************************** STUDENT AMBASSADOR OF HEADER *********************************/
+.div4 {
+  background: transparent;
+  display: flex; flex-direction: column;
+
+  .div4a {
+    width: 100%; height: 500px;
+    margin-top: 4%; overflow: hidden;
+    position: relative;
+
+    .bgimg { 
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; filter: brightness(80%);
+      background: url(assets/StAmb.png) center/cover no-repeat;
+    }
+    h1 {
+      font-size: 3.5rem; color: white;
+      margin-top: 18%; margin-left: 10%;
+      position: absolute; line-height: 1;
+    }
+  }
+
+  .div4b {
+    background: var(--div4b-bg);
+    display: flex; flex-direction: column;
+    width: 92%; max-height: max-content;
+    border-radius: 10px; align-items: center;
+    position: relative; transform: translate(7%, -17%);
+    margin-top: 2rem; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.187);
+
+    .gst {
+      flex: 1; width: 100%;
+      border-radius: 10px; display: flex;
+      justify-content: space-between;
+      align-items: center; padding: 2rem;
+
+      .cont { width: 80%; p {line-height: 1.6;} }
+
+      button {
+        background-color: green;
+        color: white; border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem; font-weight: bold;
+        border-radius: 8px; cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      button:hover {background-color: #0f3e19;}
+    }
+
+    .unpo {
+      width: 100%; height: 100%;
+      margin: 0 auto; overflow: hidden;
+      position: relative;
+      flex: 1; border-radius: 8px;
+
+      .buildingimg {
+        width: 380px; height: 570px;
+        position: relative; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.187);
+        margin-top: 2%; left: 14%; margin-bottom: 7%;
+        img {
+          width: 100%; height: 100%;
+          object-fit: cover;
+          object-position: center;
+          z-index: 1;
+          border-radius: 10px;
+          justify-self: center;
+        }
+      }
+
+      .ucont {
+        position: absolute;
+        top: 55%; left: 55%;
+        transform: translate(-53%, -48%);
+        background: var(--div4b-bg);
+        padding: 2rem; border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.187);
+        width: 495px; height: 280px;
+        z-index: 2; text-align: justify;
+
+        h1 {font-size: 3rem; line-height: 1; margin-bottom: 5%;}
+        ul {list-style: none; font-size: 1.1rem;}
+      }
+    }
+  }
+
+  .div4c {
+    background: var(--div4c-bg);
+    display: flex; flex-direction: row;
+    height: 130px; transform: translateY(-90%);
+
+    .tabs {
+      width: 100%; display: flex;
+      margin: 1%; border-radius: 8px;
+      background: var(--div4b-bg);
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.187);
+      cursor: pointer; 
+      .inoc {
+        border-radius: 8px;
+        width: 30%; height: 100%;
+        align-content: center;
+        background: var(--div4c-bg);
+        img { width: 50%; height: 50%; margin: 20%; }
+      }
+      .desc { margin-left: 5%; h1 {font-size: 1rem;} p {font-size: 0.9rem;} }
+    }
+    .tabs:hover {
+      transform: scale(1.1, 1.1);
+      transition: transform 0.3s ease;
+      h1 {color: green;}
+    }
+  }
+
+  .div4d {
+    display: block; transform: translateY(-30%);
+
+    .rtabs {
+      display: flex; margin-top: 1%;
+      gap: 2%; justify-content: space-around;
+
+      .rsns {
+        background: var(--div4b-bg);
+        width: 30%; border-radius: 8px;
+        align-content: center; padding-left: 2%;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.187);
+
+        img { width: 25%; height: 25%; }
+        h2 { line-height: 1.5; }
+      }
+    }
+  }
+}
+
+/*********************************** SIGN IN AND LOGIN PAGE *********************************/
+.form_main
+{
+  width: 350px; height:480px;
+  margin:auto; display: flex; inset: 0;
+  border-radius:10px; flex-direction: column;
+  align-items: center; justify-content: center;
+  background-color: rgb(255, 255, 255); padding: 25px;
+  box-shadow: 0 0 15px 5px #e1e1e1;
+  position: fixed; overflow: hidden;
+
+  .top-nav {
+    z-index: 2; text-align: center; justify-items: center;
+    color: rgb(1, 70, 70); width: 100%; height: 22%;
+
+    h1 {font-size: 1.5rem; margin-bottom: 5%;}
+    ul {
+      list-style: none; display: flex;
+      justify-content: center; width: 62%;
+      border-radius: 20px;
+      background: rgb(212, 212, 212);
+      box-shadow: 0 1px 3px rgba(48, 48, 48, 0.742);
+
+      li {
+        width: 100%;
+        button {
+          width: 100%; padding: 6%; border: none; background: none;
+          display: flex; justify-content: center; align-items: center;
+          gap: 8%; cursor: pointer; transition: all 0.3s ease;
+        }
+        .pgnavbtn.active {background: rgba(0, 128, 128, 0.331); border-radius: 20px;}
+        .pgnavbtn {border-radius: 20px 0 0 20px;}
+      }
+    }
+  }
+  #loginpg {height: 63%; #loginSubmit {top: 22%;} .inputContainer{top: 5%;}}
+
+  .fields-section {
+    z-index: 2; width: 100%; gap: 8px;
+    display: flex; flex-direction: column;
+    transition: all 0.3s ease;
+
+    p{color: rgb(1, 70, 70);}
+
+    .inputContainer {
+      width: 100%; position: relative; display: flex;
+      align-items: center; justify-content: center; z-index: 2;
+
+      .inputIcon {position: absolute; left: 3px;}
+      button {
+        z-index: 3; position: absolute;
+        background: none; border: none;
+        cursor: pointer; right: 0;
+        padding-bottom: 3%;
+        font-size: 1rem;
+      }
+      button:hover {text-shadow: 0 1px 10px gray;}
+      .inputField {
+        width: 100%; height: 30px; 
+        background-color: transparent; 
+        border: none; margin: 10px 0;
+        border-bottom: 2px solid rgb(173, 173, 173);
+        color: black; font-size: .8em; 
+        font-weight: 500; box-sizing: border-box; 
+        padding-left: 30px;
+      }
+      .inputField:focus {outline: none; border-bottom: 2px solid teal;}
+      .inputField::placeholder {color: rgb(80, 80, 80); font-size: 1em; font-weight: 500;}
+
+      .err {
+        color: red; background: var(--error-bg); top: 85%; padding: none;
+        border: 1px solid var(--error-border); border-radius: 10px;
+        font-size: 0.8rem; width: 100%; position: absolute;
+        text-align: center;
+      }
+      .noerr {
+        color: rgb(39, 81, 39); background: rgba(86, 209, 75, 0.342);; top: 85%; padding: none;
+        border: 1px solid rgba(75, 209, 91, 0.856); border-radius: 10px;
+        font-size: 0.8rem; width: 100%; position: absolute;
+        text-align: center;
+      }
+    }
+  }
+
+  #loginSubmit, #signupSubmit {
+    z-index: 2; position: relative; width: 100%;
+    border: none; border-radius:4px; height: 30px;
+    background-color: rgb(46, 141, 103); color: white;
+    font-size: 1em; font-weight: bold; letter-spacing: 1px;
+    margin: 10px; cursor: pointer; border-radius: 30px;
+    transition: all .3s ease; display: flex; gap: 3%;
+    justify-content: center; align-items: center;
+    align-self: center;
+    box-shadow: rgb(32, 97, 71) 0px 5px 0px 0px;
+    margin-top: 8%;
+  }
+  #loginSubmit:hover, #signupSubmit:hover { background-color: rgb(39, 119, 87); box-shadow:rgb(22, 68, 50) 0px 6px 0px 0px; }
+  #loginSubmit:active, #signupSubmit:active { background-color: rgb(28, 85, 62); transform: translateY(5px); transition: 200ms; }
+}
+
+.form_main::before {
+  position: absolute; content: "";
+  width: 350px; height: 400px; background-color: rgba(46, 141, 103, 0.331);
+  transform: rotate(45deg); left: -180px; bottom: 30px; z-index: 1;
+  border-radius: 30px; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.082);
+}
+
+/*********************************** DASHBOARD PAGE *********************************/
+.jpheader {
+  background: var(--hf-bg); gap: 5%;
+  display: flex; flex-direction: row-reverse;
+}
