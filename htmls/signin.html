@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Account | Internee.pk</title>
+        <link rel="icon" href="../assets/icon.png" />
+        <link rel="stylesheet" href="../styles.css" />
+    </head>
+    <body>
+        <div class="background">
+            <div class="blob blob1"></div>
+            <div class="blob blob2"></div>
+        </div>
+        <form class="form_main" method="post" autocomplete="off">
+            <div class="top-nav">
+                <h1>Welcome to Internee.pk!</h1>
+                <ul>
+                    <li><button class="pgnavbtn active" data-target="loginpg" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="rgb(1, 70, 70)">
+                            <path d="M478.09-111.87v-91h279.04v-554.26H478.09v-91h279.04q37.78 0 64.39 26.61t26.61 64.39v554.26q0 37.78-26.61 64.39t-64.39 26.61H478.09Zm-87.42-156.65-62.89-65.41L428.35-434.5H111.87v-91h316.48L327.78-626.07l62.89-65.41L601.91-480 390.67-268.52Z"/>
+                        </svg>
+                        Log In
+                    </button></li>
+                    <li><button class="pgnavbtn" data-target="signuppg" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="rgb(1,70,70)">
+                            <path d="M724.3-410.28v-118.09H606.22v-83.83H724.3v-118.08h83.83v118.08h118.09v83.83H808.13v118.09H724.3Zm-363.58-73.79q-69.59 0-118.86-49.27-49.27-49.27-49.27-118.86 0-69.58 49.27-118.74 49.27-49.15 118.86-49.15 69.58 0 118.86 49.15 49.27 49.16 49.27 118.74 0 69.59-49.27 118.86-49.28 49.27-118.86 49.27ZM32.59-147.8v-120.61q0-36.23 18.74-66.59 18.74-30.37 49.8-46.35 62.72-31.24 127.66-46.98 64.95-15.74 131.93-15.74 67.43 0 132.39 15.62 64.96 15.62 127.19 46.86 31.06 15.95 49.81 46.25 18.74 30.3 18.74 66.91v120.63H32.59Z"/>
+                        </svg>
+                        Sign Up
+                    </button></li>
+                </ul>
+            </div>
+
+            <!-- Login Form -->
+            <section id="loginpg" class="fields-section">
+                <p>Login to Proceed</p>
+
+                <div class="inputContainer">
+                    <svg class="inputIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16" width="16" height="16">
+                        <path stroke="rgb(1, 70, 70)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 2-8.4 7.05a1 1 0 0 1-1.2 0L1 2m18 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1m18 0v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2"/>
+                    </svg>
+                    <input type="email" class="inputField" id="loginEmail" placeholder="E-mail" />
+                    <span class="err hidden" id="loginEmailErr"></span>
+                </div>
+                
+                <div class="inputContainer">
+                    <svg class="inputIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(1, 70, 70)" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+                    </svg>
+                    <input type="password" class="inputField" id="loginPassword" placeholder="Password" />
+                    <button type="button" class="toggle-pwd" data-target="loginPassword" aria-label="Show/Hide Current Password">😊</button>
+                    <span class="err hidden" id="loginPassErr"></span>
+                </div>
+
+                <button type="button" id="loginSubmit" class="action-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="white">
+                        <path d="M478.09-111.87v-91h279.04v-554.26H478.09v-91h279.04q37.78 0 64.39 26.61t26.61 64.39v554.26q0 37.78-26.61 64.39t-64.39 26.61H478.09Zm-87.42-156.65-62.89-65.41L428.35-434.5H111.87v-91h316.48L327.78-626.07l62.89-65.41L601.91-480 390.67-268.52Z"/>
+                    </svg>
+                    Log In
+                </button>
+            </section>
+
+            <!-- Sign Up Form -->
+            <section class="fields-section hidden" id="signuppg">
+                <p>Sign Up to Proceed</p>
+                <div class="inputContainer">
+                    <svg class="inputIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16" width="16" height="16">
+                        <path stroke="rgb(1, 70, 70)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 2-8.4 7.05a1 1 0 0 1-1.2 0L1 2m18 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1m18 0v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2"/>
+                    </svg>
+                    <input type="email" class="inputField" id="signupEmail" placeholder="E-mail" />
+                    <span class="err hidden" id="signupEmailErr"></span>
+                </div>
+    
+                <div class="inputContainer">
+                    <svg class="inputIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(1, 70, 70)" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+                    </svg>
+                    <input type="password" class="inputField" id="signupPassword" placeholder="Password" />
+                    <button type="button" class="toggle-pwd" data-target="signupPassword" aria-label="Show/Hide New Password">😊</button>
+                    <span class="err hidden" id="signupPassErr"></span>
+                </div>
+            
+                <div class="inputContainer">
+                    <svg class="inputIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" width="16" height="16">
+                        <path stroke="rgb(1, 70, 70)" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 8H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h7m2.5-11V4.5a3.5 3.5 0 1 0-7 0V8m10 5.217V14.5l.9.9m3.6-.9a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z"/>
+                    </svg>  
+                    <input type="password" class="inputField" id="signupConfirm" placeholder="Confirm Password" />
+                    <button type="button" class="toggle-pwd" data-target="signupConfirm" aria-label="Show/Hide Confirm Password">😊</button>
+                    <span class="err hidden" id="signupConfirmErr"></span>
+                </div>
+    
+                <button type="button" id="signupSubmit" class="action-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="white">
+                        <path d="M724.3-410.28v-118.09H606.22v-83.83H724.3v-118.08h83.83v118.08h118.09v83.83H808.13v118.09H724.3Zm-363.58-73.79q-69.59 0-118.86-49.27-49.27-49.27-49.27-118.86 0-69.58 49.27-118.74 49.27-49.15 118.86-49.15 69.58 0 118.86 49.15 49.27 49.16 49.27 118.74 0 69.59-49.27 118.86-49.28 49.27-118.86 49.27ZM32.59-147.8v-120.61q0-36.23 18.74-66.59 18.74-30.37 49.8-46.35 62.72-31.24 127.66-46.98 64.95-15.74 131.93-15.74 67.43 0 132.39 15.62 64.96 15.62 127.19 46.86 31.06 15.95 49.81 46.25 18.74 30.3 18.74 66.91v120.63H32.59Z"/>
+                    </svg>
+                    Create Account
+                </button>
+            </section>
+        </form>
+
+        <script src="../script.js"></script>
+    </body>
+</html>
