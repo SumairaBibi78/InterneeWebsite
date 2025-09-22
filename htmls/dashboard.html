@@ -5,15 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Dashboard | Internee.pk</title>
         <link rel="icon" href="../assets/icon.png" />
-        <link rel="stylesheet" href="../styles.css" />
+        <link rel="stylesheet" href="../allstyles/styles.css" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script> <!-- Chart.js CDN -->
     </head>
     <body>
         <header class="jpheader">
-            <div class="ptbtn">
-                <h1>Dashboard</h1>
-                <button class="profile" id="prbtn">👨‍🎓</button>
-                <button class="thtgl" id="thtgl">🌙</button>
-            </div>
+            <h1>Dashboard</h1>
+            <button class="profile" id="prbtn">👨‍🎓</button>
+            <button class="thtgl" id="thtgl">🌙</button>
+            <button class="hambtn" id="hambtn">☰</button>
+            <p>BIBI</p>
         </header>
 
         <div class="background">
@@ -21,7 +22,7 @@
             <div class="blob blob2"></div>
         </div>
 
-        <div class="prof hidden">
+        <div class="prof hidden" style="transform: translate(290%, 30%) !important;">
             <div class="cols">
                 <div class="icon">👨‍🎓</div>
                 <p>Email</p>
@@ -94,6 +95,371 @@
                 </section>
             </main>
         </div>
-        <script src="../dbscript.js" defer></script>
+
+        <aside class="sidebar" id="sidebar">
+            <h1>Internee.pk</h1>            
+            <ul class="ddbtns">
+                <li>
+                    <button class="ddbtn" data-target="profnav"> <img src="../assets/person.png" id="refimg"/> Profile <img src="../assets/right.png" id="rightimg"/> </button>
+                    <ul id="profnav" class="mainbtn hidden">
+                        <li><button class="mainnav" data-target="ovrviw">Overview</button></li>
+                        <li><button class="mainnav" data-target="pubprof">Public Profile</button></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="ddbtn" data-target="internav"> <img src="../assets/intern.png"/ id="refimg"> Internship <img src="../assets/right.png" id="rightimg"/> </button>
+                    <ul id="internav" class="mainbtn hidden">
+                        <li><button class="mainnav" data-target="taskport">Task Portal</button></li>
+                        <li><button class="mainnav" data-target="certif">Certificate</button></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="ddbtn" data-target="mocknav"> <img src="../assets/badge.png"/ id="refimg"> Mock Interview <img src="../assets/right.png" id="rightimg"/> </button>
+                    <ul id="mocknav" class="mainbtn hidden">
+                        <li><button class="mainnav" data-target="bads">Badges</button></li>
+                        <li><button class="mainnav" data-target="intvs">Interviews</button></li>
+                        <li><button class="mainnav" data-target="certintv">Certified Interviews</button></li>
+                        <li><button class="mainnav" data-target="rdmp">Road Map</button></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="ddbtn" data-target="jpnav"> <img src="../assets/jobpor.png"/ id="refimg"> Job Portal <img src="../assets/right.png" id="rightimg"/> </button>
+                    <ul id="jpnav" class="mainbtn hidden">
+                        <li><button class="mainnav" data-target="latjbup">Latest Job Updates</button></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="ddbtn" data-target="ccnav"> <img src="../assets/coach.png"/ id="refimg"> AI Career Coach <img src="../assets/right.png" id="rightimg"/> </button>
+                    <ul id="ccnav" class="mainbtn hidden">
+                        <li><button class="mainnav" data-target="buildres">Build Resume</button></li>
+                        <li><button class="mainnav" data-target="indins">Industry Insights</button></li>
+                        <li><button class="mainnav" data-target="covlet">Cover Letter</button></li>
+                        <li><button class="mainnav" data-target="intvprp">Interview Preparation</button></li>
+                    </ul>
+                </li>
+                <li>
+                    <button class="ddbtn" data-target="clmsnav"> <img src="../assets/lms.png"/ id="refimg"> AI Course LMS <img src="../assets/right.png" id="rightimg"/> </button>
+                    <ul id="clmsnav" class="mainbtn hidden">
+                        <li><button class="mainnav" data-target="dshbrd">Dashboard</button></li>
+                        <li><button class="mainnav" data-target="ctcr">Create Course</button></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        <main class="mainside">
+            <section class="maincontent hidden" id="ovrviw">
+                <div class="welcome">
+                    <span>👨‍🎓</span>
+                    <div class="welhead">
+                        <h1>Welcome, User!</h1>
+                        <p>Ready to Track your Progress?</p>
+                    </div>
+                </div>
+                <div class="info">
+                    <div class="graph">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <div class="mckint">
+                        <h1>Mock Interviews</h1>
+                        <h2><span>0</span> Total Completed</h2>
+                        <p>No Interview Found for this Email.</p>
+                        <button class="reatmpt">Re-Attempt</button>
+                        <button class="showintvw">Show All Internviews</button>
+                    </div>
+                    <div class="achvmnt">
+                        <h1>Your Achievements</h1>
+                        <button>View All Badges</button>
+                    </div>
+                    <div class="tasks">
+                        <h1>Tasks</h1>
+                        <p>Keep track of your progress and deadlines.</p>
+                        <div class="tsk">
+                            <div class="tk">
+                                <div class="txt">
+                                    <p>Introduce Yourself</p>
+                                </div>
+                                <button class="tkbtn">Submitted</button>
+                            </div>
+                            <div class="tk">
+                                <div class="txt"><p>Weather App using API</p></div>
+                                <button class="tkbtn">Submitted</button>
+                            </div>
+                            <div class="tk">
+                                <div class="txt">
+                                    <p>Drag and Drop File Uploader (With Preview & Progress Bar)</p>
+                                </div>
+                                <button class="tkbtn">Submitted</button>
+                            </div>
+                            <div class="tk">
+                                <div class="txt">
+                                    <p>Multi-Step Form with Progress Indicator</p>
+                                </div>
+                                <button class="tkbtn">Submitted</button>
+                            </div>
+                            <div class="tk">
+                                <div class="txt">
+                                    <p>Real-Time Chat App (Frontend Only)</p>
+                                </div>
+                                <button class="tkbtn">Submitted</button>
+                            </div>
+                            <div class="tk">
+                                <div class="txt">
+                                    <p>Develop the frontend of the website using HTML, CSS, and JS</p>
+                                </div>
+                                <button class="tkbtn assigned">Assigned</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ongng">
+                        <h2>Ongoing Internship</h2>
+                        <h4>HTML CSS JS Internship</h4>
+                        <p>11 days remaining</p>
+                        <div class="comp">
+                            <p>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#264326">
+                                    <path d="M222.78-76.78q-41 0-69.5-28.85t-28.5-69.15v-514.44q0-40.3 28.5-69.15 28.5-28.85 69.5-28.85H288v-96h85v96h214v-96h85v96h65.22q41 0 69.5 28.85t28.5 69.15v514.44q0 40.3-28.5 69.15-28.5 28.85-69.5 28.85H222.78Zm0-98h514.44V-528H222.78v353.22Zm0-425.22h514.44v-89.22H222.78V-600Zm0 0v-89.22V-600Z"/>
+                                </svg>
+                                Task Completion
+                            </p>
+                            <div class="progbot"></div>
+                            <div class="progtop"></div>
+                        </div>
+                    </div>
+                    <div class="compint">
+                        <h2>Completed Internships</h2>
+                        <p>No Completed Internships Yet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="maincontent hidden" id="pubprof">
+                <h1>Public Profile</h1>
+            </section>
+
+            <section class="maincontent hidden" id="taskport">
+                <div class="welcome">
+                    <h1>Welcome, User!</h1>
+                    <p>Manage your Assignments Efficiently!</p>
+                </div>
+                <div class="progr">
+                    <h1>Your Progress</h1>
+                    <p>5 / 6 Assignments Completed</p>
+                    <div class="progtrack"> <div class="prgbar"></div> </div>
+                </div>
+                <div class="assigns">
+                    <h1>Your Assignments</h1>
+                    <table>
+                        <thead><tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Introduce Your self</td>
+                                <td>Submitted</td>
+                                <td><button>Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Weather App Using API</td>
+                                <td>Submitted</td>
+                                <td><button>Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Drag and Drop File Uploader (With Preview & Progress Bar)</td>
+                                <td>Submitted</td>
+                                <td><button>Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Multi-Step Form with Progress Indicator</td>
+                                <td>Submitted</td>
+                                <td><button>Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Real-Time Chat App (Frontend Only)</td>
+                                <td>Submitted</td>
+                                <td><button>Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Develop the frontend of the website using HTML, CSS, and JS</td>
+                                <td>Assigned</td>
+                                <td><button>Submit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- loader --> 
+                    <div id="loaderOverlay" class="overlay"> <div class="loader"></div> </div>
+                    <!-- subtask overlay + modal -->
+                    <div id="subtaskOverlay" class="overlay">
+                        <div class="subtask">
+                            <button class="close-btn">&times;</button>
+                            <h2>Submit Assignment</h2>
+                            <p>Ensure all fields are correctly filled before submitting.</p>
+                            <div class="exp">
+                                <h2>Introduce Your Self</h2>
+                                <p>
+                                    Welcome to Internee.pk’s Virtual Internship Program!<br><br>
+                                    We believe that getting to know your fellow internees is a great way to foster a sense of community and collaboration.<br><br>
+                                    Here’s a step-by-step guide on how to make video for your introduction:<br>
+                                </p>
+
+                                <h3>Name</h3>
+                                <p>This is where you share your full name, so your fellow internees know who you are.</p>
+
+                                <h3>Academic Background</h3>
+                                <p>
+                                    <span>Major: </span>Specify your field of study or major in your academic pursuits.<br>
+                                    <span>University: </span>Tell others which university you attended or are attending for your education.<br>
+                                    <span>Current Year of Study: </span>Indicate what year you are currently in your academic journey (e.g., freshman, sophomore, etc.).
+                                </p>
+
+                                <p class="inpts">
+                                    LinkedIn Post URL:
+                                    <input type="text" placeholder="Enter LinkedIn Post URL"/>
+                                </p>
+                                <p class="inpts">
+                                    GitHub Repository URL:
+                                    <input type="text" placeholder="Enter GitHub Repo URL"/>
+                                </p>
+                            </div>
+                            <button class="sumbtn">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="maincontent hidden" id="certif">
+                <div class="head">
+                    <h1>Certificate</h1>
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#FFFFFF">
+                            <path d="M648.94-87.87q-53.09 0-90.24-37.09-37.16-37.09-37.16-90.08 0-8.76 3.76-26.85L296.43-381.87q-16.71 13.76-37.21 21.64-20.51 7.88-43.94 7.88-53.09 0-90.25-37.21-37.16-37.22-37.16-90.38 0-53.17 37.16-90.44 37.16-37.27 90.25-37.27 23.48 0 44.2 8 20.72 8 37.67 22l227.92-139.5q-1.77-6.52-2.65-13.21-.88-6.69-.88-14.36 0-53.09 37.17-90.25t90.26-37.16q53.1 0 90.25 37.17 37.15 37.16 37.15 90.26 0 53.09-37.16 90.24-37.16 37.16-90.25 37.16-24.05 0-44.96-8.24t-37.87-22.72L339.17-509.72q2 7.25 3 14.3 1 7.04 1 15.54t-1.12 15.79q-1.12 7.29-3.12 14.52l226.72 138.55q16.96-14.72 38.07-23.2 21.11-8.48 45.24-8.48 53.09 0 90.25 37.22t37.16 90.38q0 53.17-37.17 90.2-37.16 37.03-90.26 37.03Zm-.13-80.61q19.83 0 33.39-13.46 13.56-13.46 13.56-33.36t-13.52-33.35q-13.53-13.44-33.52-13.44-19.79 0-33.18 13.56t-13.39 33.25q0 19.68 13.42 33.24 13.41 13.56 33.24 13.56ZM215.3-432.96q19.9 0 33.58-13.51 13.69-13.51 13.69-33.48t-13.69-33.53q-13.68-13.56-33.58-13.56t-33.36 13.51q-13.46 13.51-13.46 33.48t13.46 33.53q13.46 13.56 33.36 13.56Zm433.66-264.95q19.68 0 33.12-13.42 13.44-13.41 13.44-33.24 0-19.83-13.41-33.39-13.42-13.56-33.25-13.56T615.47-778q-13.56 13.53-13.56 33.52 0 19.79 13.68 33.18t33.37 13.39Zm.24 482.63ZM215.52-480Zm433.44-264.72Z"/>
+                        </svg>
+                        Share Certificates
+                    </button>
+                </div>
+                <p>No Certificates Found.</p>
+            </section>
+
+            <section class="maincontent hidden" id="bads">
+                <div class="head">
+                    <h1>Interview Badges</h1>
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#FFFFFF">
+                            <path d="M368.37-237.37q-34.48 0-58.74-24.26-24.26-24.26-24.26-58.74v-474.26q0-34.48 24.26-58.74 24.26-24.26 58.74-24.26h378.26q34.48 0 58.74 24.26 24.26 24.26 24.26 58.74v474.26q0 34.48-24.26 58.74-24.26 24.26-58.74 24.26H368.37Zm0-83h378.26v-474.26H368.37v474.26Zm-155 238q-34.48 0-58.74-24.26-24.26-24.26-24.26-58.74v-557.26h83v557.26h461.26v83H213.37Zm155-238v-474.26 474.26Z"/>
+                        </svg>
+                        Share
+                    </button>
+                </div>
+                <p>Review your earned badges from completed mock interviews.</p>
+                <p>No badges earned yet. Complete mock interviews to earn one!</p>
+            </section>
+
+            <section class="maincontent hidden" id="intvs">
+                <h1>Interviews</h1>
+            </section>
+
+            <section class="maincontent hidden" id="certintv">
+                <h1>Certified Interviews</h1>
+            </section>
+
+            <section class="maincontent hidden" id="rdmp">
+                <h1>Road Map</h1>
+            </section>
+
+            <section class="maincontent hidden" id="latjbup">
+                <h1>Latest Job Updates</h1>
+            </section>
+
+            <section class="maincontent hidden" id="buildres">
+                <h1>Build Resume</h1>
+            </section>
+
+            <section class="maincontent hidden" id="indins">
+                <h1>Industry Insights</h1>
+            </section>
+
+            <section class="maincontent hidden" id="covlet">
+                <h1>Cover Letter</h1>
+            </section>
+
+            <section class="maincontent hidden" id="intvprp">
+                <h1>Interview Preparation</h1>
+            </section>
+
+            <section class="maincontent hidden" id="dshbrd">
+                <h1>Dashboard</h1>
+            </section>
+
+            <section class="maincontent hidden" id="ctcr">
+                <h1>Create Course</h1>
+            </section>
+        </main>
+
+        <script src="../allscripts/dbscript.js" defer></script>
+        <script>
+            // 1) Labels for the X-axis
+            const labels = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+            
+            // 2) One or more datasets for the Y-axis
+            const data = {
+                labels: labels,
+                datasets: [{
+                    label: 'Progress',
+                    data: [0, 0, 0, 0, 5, 0],
+                    borderColor: 'rgba(38, 67, 38, 1)',
+                    backgroundColor: 'rgba(38, 67, 38, 0.2)',
+                    fill: true,
+                    tension: 0.1,
+                    pointStyle: 'circle',
+                    pointRadius: 5,
+                    pointHoverRadius: 8
+                }]
+            };
+
+            // 3) Chart configuration
+            const config = {
+                type: 'line',    // specify a line chart
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(38, 67, 38, 0.3)',
+                            titleColor: 'rgb(38, 67, 38)',
+                            bodyColor: 'rgb(38, 67, 38)',
+                            titleFont: {size:14, weight: 'bold'},
+                            bodyFont: {size:12}
+                        },
+                        title: {
+                            display: true,
+                            text: 'Progress Overview'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: false, text: 'Month' },
+                            grid: {borderDash: [4,4], color: 'gray' }
+                        },
+                        y: {
+                            title: { display: false, text: 'Achivements' },
+                            beginAtZero: true, min: 0, max: 8,
+                            ticks: { stepSize:2 }, grid: {borderDash: [4,4], color: 'gray'}
+                        }
+                    }
+                }
+            };
+            // 4) Get the canvas context and render
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, config);
+        </script>
     </body>
 </html>

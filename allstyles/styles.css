@@ -1,26 +1,36 @@
 /*********************************** THEMING *********************************/
 :root {
-    --bg: #fff;
-    --txt-color: #000;
-    --hf-bg: rgba(255,255,255);
-    --hf-border:  #000;
-    --error-border: rgba(209, 75, 75, 0.541);
-    --error-bg: rgba(209, 75, 75, 0.178);
-    --div3a-pcolor: darkslategray;
-    --div4b-bg: rgb(243, 241, 241);
-    --div4c-bg: rgb(234, 232, 232);
+  --bg: #fff;
+  --txt-color: #000;
+  --hf-bg: rgba(255,255,255);
+  --hf-border:  #000;
+  --error-border: rgba(209, 75, 75, 0.541);
+  --error-bg: rgba(209, 75, 75, 0.178);
+  --div3a-pcolor: darkslategray;
+  --div4b-bg: rgb(243, 241, 241);
+  --div4c-bg: rgb(234, 232, 232);
+  /* dashboard theme */
+  --aside-bg: rgb(38, 67, 38);
+  --btn-bg: rgb(69, 125, 69);
+  --btn-hover: rgb(53, 95, 53);
+  --tskprg-bg: white;
 }
 
 body.dark {
-    --bg: #000;
-    --txt-color: #fff;
-    --hf-bg: black;
-    --hf-border: #fff;
-    --error-border: rgb(246, 49, 49);
-    --error-bg: #fae1e1;
-    --div3a-pcolor: gainsboro;
-    --div4b-bg: #191a19;
-    --div4c-bg: #191a19;
+  --bg: #000;
+  --txt-color: #fff;
+  --hf-bg: black;
+  --hf-border: #fff;
+  --error-border: rgb(246, 49, 49);
+  --error-bg: #fae1e1;
+  --div3a-pcolor: gainsboro;
+  --div4b-bg: #191a19;
+  --div4c-bg: #191a19;
+  /* dashboard theme */
+  --aside-bg: rgb(69, 125, 69);
+  --btn-bg: rgb(38, 67, 38);
+  --btn-hover: rgb(59, 103, 59);
+  --tskprg-bg: rgb(69, 125, 124);
 }
 
 body {
@@ -653,7 +663,355 @@ footer {
 }
 
 /*********************************** DASHBOARD PAGE *********************************/
+
+/*********************************** HEADER *********************************/
 .jpheader {
-  background: var(--hf-bg); gap: 5%;
-  display: flex; flex-direction: row-reverse;
+  background: var(--hf-bg); gap: 2%;
+  box-shadow: 0 1px 3px var(--hf-border);
+  justify-content: flex-end; display: flex;
+  z-index: 2; position: absolute; width: 100%;
+
+  button { font-size: 1.7rem; background: none; border: none; cursor: pointer;}
+  button:hover { text-shadow: 0 1px 3px var(--txt-color); }
+  .hambtn.isopen {transform: rotate(90deg); transition: transform 0.3s ease; }
+  p {color: var(--bg); cursor: default;}
+}
+
+/*********************************** SIDEBAR *********************************/
+.sidebar {
+  background: var(--aside-bg); width: 20%;
+  padding: 2%; color: white; overflow: hidden;
+  position: relative; inset: 0; z-index: 2; height: 720px;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+
+  h1 {margin-bottom: 10%; margin-top: 15%;}
+
+  .ddbtns {
+    list-style: none; padding: 2%; display: flex; flex-direction: column;
+    align-items: center; gap: 18px;
+    li {
+      width: 100%; justify-items: center; gap: 8px;
+      display: flex; flex-direction: column;
+      button {
+        color: white; font-size: 0.9rem; background: none;
+        display: flex; justify-content: center; padding: 3%;
+        align-items: center; border-radius: 8px; border: none;
+        cursor: pointer;
+
+        #refimg {position: absolute; left: 20%;}
+        #rightimg {position: absolute; left: 75%;}
+      }
+      button:hover {background: var(--btn-hover);}
+      button.active {background: var(--btn-bg);}
+      ul {
+        width: 90%; align-self: center; display: flex;
+        flex-direction: column; gap: 8px;
+      }
+    }
+  }
+}
+.sidebar.collapsed {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+/*********************************** MAIN CONTENT *********************************/
+.mainside {
+  width: 80%; position: fixed; margin-top: 4%;
+  inset: 0; justify-self: flex-end; display: flex;
+  padding: 1%; flex-direction: column; overflow: auto;
+  scrollbar-width: none; transition: width 0.3s ease;
+
+  /***************************************************** OVERVIEW  *****************************************************/
+  #ovrviw {
+    
+    .welcome {
+      display: flex; gap: 3%; width: 95%;
+      background: var(--aside-bg); padding: 3%;
+      border-radius: 20px; align-items: center;
+      box-shadow: 0 1px 10px var(--txt-color);
+      margin-top: 2%; justify-self: center;
+      transition: all 0.2s ease-in-out;
+      color: white;
+
+      span {
+        width: 8%; text-align: center;
+        font-size: 3rem; margin-left: 3%; text-overflow: ellipsis; 
+        background: ghostwhite; border-radius: 50%;
+        box-shadow: 0 1px 10px var(--bg);
+      }
+      .welhead {line-height: 1.2;}
+    }
+    .welcome:hover {transform: scale(1.02,1.02);}
+
+    .info {
+      overflow: auto; scrollbar-width: none; top: 23%; height: 100%;
+      width: 95%; justify-self: center; padding: 2% 1% 1% 1%;
+      margin-top: 2%; position: absolute;
+      
+      .graph {
+        background: rgb(221, 246, 221);
+        border-radius: 10px; padding: 2%;
+        box-shadow: 0 1px 8px gray; display: flex;
+        width: 65%; height: 60%; justify-content: center;
+        
+        #myChart {
+          max-width: 650px; max-height: 450px;
+          align-self: center;
+        }
+      }
+
+      .mckint, .achvmnt, .tasks, .ongng, .compint {
+        background: rgb(221, 246, 221); color: black;
+        border: 1px solid black; border-radius: 20px;
+        padding: 2%; justify-items: center; width: 30%;
+        box-shadow: 0 1px 8px var(--txt-color); text-align: center;
+
+        button {padding: 3%; border-radius: 6px; border: none; box-shadow: 0 1px 5px rgba(128, 128, 128, 0.626); cursor: pointer;}
+      }
+      .graph:hover, .mckint:hover, .achvmnt:hover, .tasks:hover, .ongng:hover, .compint:hover {transform: scale(1.01, 1.01);}
+
+      .mckint {
+        position: absolute; right: 2%; height: 57%; top: 3%;
+        h1 {color: rgb(38, 67, 38); line-height: 1; margin-top: 8%; padding: 3%;}
+        h2 { margin-top: 5%; span {font-size: 2.5rem; color: green;} } p {margin-bottom: 10%;}
+        button {margin-top: 2%; width: 100%; padding: 5%; font-size: 1rem; margin-bottom: 2%;}
+        .reatmpt {background: seagreen; color: white; } .reatmpt:hover {background: rgb(33, 99, 62);}
+        .showintvw {background: gainsboro; color: black} .showintvw:hover {background: rgb(190, 190, 190);}
+      }
+
+      .achvmnt {
+        position: absolute; top: 65%; left: 1%;
+        h1 {color: rgb(38, 67, 38); line-height: 1; margin-bottom: 10%;}
+        button { background: seagreen; color: white; width: 80%;}
+        button:hover {background: rgb(33, 99, 62);}
+      }
+
+      .tasks {
+        position: absolute; right: 33%; height: 70%;  top: 65%; width: 35%;
+        h1 {color: rgb(38, 67, 38); line-height: 1.2; margin-bottom: 3%;}
+        p {line-height: 1.1;}
+
+        .tsk {
+          display: flex; flex-direction: column; gap: 10px; margin-top: 10%;
+          background: rgb(179, 224, 179); overflow: auto; height: 75%; width: 98%;
+          padding: 5%; border-radius: 10px; box-shadow: 0 1px 5px gainsboro;
+          scrollbar-width: thin;
+
+          .tk {
+            display: flex; background: rgb(220, 250, 220); border-radius: 8px;
+            height: 150px; align-items: center; justify-content: flex-start;
+            box-shadow: 0 1px 5px gainsboro; padding: 2%;
+
+            .txt {
+              width: 75%; height: 70px; align-content: center;
+              p {
+                text-align: left; font-size: 14px;
+                line-height: 1.3;
+              }
+            }
+
+            .tkbtn {
+              display: flex; align-self: center;
+              padding: 2%; border-radius: 60px;
+              background: seagreen; color: white;
+            }
+            .tkbtn:hover {background: rgb(33, 99, 62);}
+            .tkbtn.assigned {background: rgb(248, 248, 43); color: teal; font-weight: 550;}
+            .tkbtn.tkbtn.assigned:hover {background: rgb(208, 208, 37);}
+          }
+        }
+      }
+
+      .compint {
+        position: absolute; right: 2%; top: 65%;
+        h2 {line-height: 1.1; color: rgb(38, 67, 38); margin-bottom: 6%;}
+        p {color: darkslategrey;}
+      }
+
+      .ongng {
+        position: absolute; right: 2%; top: 86%;
+        h2, h4 {color: rgb(38, 67, 38);} p {margin-top: 3%; margin-bottom: 3%;}
+        .comp { 
+          justify-items: center; display: flex; flex-direction: column;
+          p { display: flex; gap: 5px; justify-items: center; }
+          .progbot { width: 100%; background: rgb(186, 186, 186); height: 6px; border-radius: 10px; position: relative; }
+          .progtop {
+            width: 40%; background: rgb(38, 67, 38); height: 5px;
+            position: absolute; z-index: 1; bottom: 12%;
+            transition: width 0.4s ease; border-radius: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  /***************************************************** TASK PORTAL  *****************************************************/
+  #taskport {
+
+    .welcome {
+      width: 95%; padding: 3%;
+      background: var(--aside-bg);
+      border-radius: 20px; align-items: center;
+      box-shadow: 0 1px 10px var(--txt-color);
+      margin-top: 2%; justify-self: center;
+      transition: all 0.2s ease-in-out;
+      color: white; text-align: center;
+    }
+    .welcome:hover {transform: scale(1.02,1.02);}
+
+    .progr {
+      width: 95%; padding: 3%;
+      background: var(--tskprg-bg);
+      border-radius: 20px; align-items: center;
+      box-shadow: 0 1px 10px var(--txt-color);
+      margin-top: 2%; justify-self: center;
+      transition: all 0.2s ease-in-out;
+      justify-items: center;
+      color: var(--txt-color); text-align: center;
+
+      .progtrack {
+        width: 60%; margin-top: 3%; height: 20px;
+        background-color: #e0e0e0; overflow: hidden;
+        border-radius: 12px; position: relative;
+        box-shadow: 0 1px 5px var(--txt-color);
+
+        .prgbar {
+          width: 83%; height: 100%;
+          background-color: rgb(38, 67, 38);
+          position: relative; border-radius: 12px;
+        }
+
+        .prgbar::after {
+          content: "83% Complete"; position: absolute;
+          top: 50%; left: 50%; color: #fff;
+          transform: translate(-50%, -50%);
+          font-weight: bold; font-size: 0.875rem;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .assigns {
+      width: 95%; padding: 3%;
+      background: var(--tskprg-bg);
+      border-radius: 20px; align-items: center;
+      box-shadow: 0 1px 10px var(--txt-color);
+      margin-top: 2%; justify-self: center;
+      transition: all 0.2s ease-in-out;
+      color: var(--txt-color); text-align: center;
+
+      h1 {text-align: justify; line-height: 1; margin-bottom: 5%;}
+      table {
+        border-collapse: collapse;
+        width: 100%; padding: 1%;
+        justify-self: center;
+        background: white;
+
+        th {font-size: 1.2rem; background: var(--btn-bg); font-weight: bold; color: white !important;}
+        th, td { padding: 2%; color: black; border-bottom: 2px solid var(--btn-bg); }
+        th:nth-child(1) { padding: 2%; }
+        td:nth-child(1) { padding: 2%; }
+        td:nth-child(2) { text-align: justify; font-weight: bold; padding-left: 5%; }
+        td:nth-child(3) { color: green; font-weight: bold;}
+        th:nth-child(4), td:nth-child(4) { padding: 2%; width: 12%;}
+
+        button {
+          background: var(--btn-bg); padding: 10%; color: white; width: 100%;
+          border-radius: 8px; box-shadow: 0 1px 3px gainsboro; font-size: 1rem;
+          cursor: pointer;
+        }
+        button:hover {background: var(--btn-hover);}
+      }
+      /* Loader */ 
+      /* ─── Overlay Base Styles ──────────────────────────────── */
+      .overlay {
+        position: fixed; inset: 0; width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        background: rgba(0, 0, 0, 0.534); opacity: 0; visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 1000;
+
+        /* ─── Shimmer Loader ──────────────────────────────────── */
+        .loader {
+          width: 240px; height: 20px; background: var(--hf-bg);
+          background-image: linear-gradient(to right, #e2e2e2 0%, #b9babc 20%, #e2e2e2 40%, #e2e2e2 100% );
+          background-size: 800px 100%; animation: shimmer 1.5s linear infinite; border-radius: 10px;
+        }
+        /* ─── Subtask Modal ───────────────────────────────────── */
+        .subtask {
+          background: var(--aside-bg); padding: 1.5rem; border-radius: 10px;
+          max-width: 450px; width: 100%; position: absolute; color: white;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.596); height: 80%;
+
+          .close-btn {
+            position: absolute; top: 0.5rem; right: 0.5rem;
+            background: none; border: none; font-size: 1.25rem;
+            line-height: 1; cursor: pointer;
+          }
+          .close-btn:hover {text-shadow: 0 1px 5px var(--txt-color);}
+
+          .exp {
+            text-align: left; margin-top: 2%; overflow: auto;
+            scrollbar-width: thin; height: 80%; padding: 2%;
+
+            h3 {margin-top: 5%;}
+            span {font-weight: bold;}
+            .inpts {
+              width: 100%; margin-top: 5%;
+              input {width: 100%; padding: 2%; border-radius: 8px;}
+              input:focus {border: 2px solid green;}
+            }
+          }
+
+          .sumbtn {
+            cursor: pointer;
+            width: 100%; padding: 2%; background: var(--btn-bg);
+            margin: 2%; border-radius: 10px; font-size: 1rem; border: none;
+            color: white; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.74);
+          }
+          .sumbtn:hover { background: var(--btn-hover); }
+        }
+      }
+      .overlay.visible { opacity: 1; visibility: visible; }
+    }
+  }
+
+  /***************************************************** CERTIFICATE  *****************************************************/
+  #certif {
+    .head {
+      display: flex; gap: 70%; margin-bottom: 2%; align-items: center; h1 {color: #0f3e19;}
+      button {
+        display: flex; align-items: center; padding: 1.2%; width: 30%;
+        background: var(--btn-bg); cursor: pointer; border: none;
+        border-radius: 8px; box-shadow: 0 1px 10px rgba(0, 0, 0, 0.724);
+        color: white; justify-content: center;
+      }
+      button:hover {background: var(--btn-hover);}
+    }
+  }
+
+  /***************************************************** BADGES  *****************************************************/
+  #bads {
+    p {margin-bottom: 1%;}
+    .head {
+      display: flex; margin-bottom: 2%; align-items: center;
+      h1 {color: #0f3e19;}
+      button {
+        position: absolute; right: 2%; gap: 8%;
+        display: flex; align-items: center; padding: 1.2%; width: 10%;
+        background: var(--btn-bg); cursor: pointer; border: none;
+        border-radius: 8px; box-shadow: 0 1px 10px rgba(0, 0, 0, 0.724);
+        color: white; justify-content: center;
+      }
+      button:hover {background: var(--btn-hover);}
+    }
+  }
+}
+.mainside.expanded {width: 100%;}
+
+@keyframes shimmer {
+  0%   { background-position: -800px 0; }
+  100% { background-position:  800px 0; }
 }
