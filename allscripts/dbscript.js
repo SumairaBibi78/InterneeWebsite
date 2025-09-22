@@ -18,23 +18,23 @@ function loadTheme() {
 
 //=============================== ONCLICK PROFILE ====================================
 const prbtn = document.getElementById('prbtn');
-const prof  = document.querySelector('.prof');
-const cols     = prof.querySelectorAll('.cols');
-const firstP   = cols[0].querySelector('p');
+const prof = document.querySelector('.prof');
+const cols = prof.querySelectorAll('.cols');
+const firstP = cols[0].querySelector('p');
 const manageCol= cols[1];
 const logoutCol= cols[2];
 const overlay = document.querySelector('.overlay');
-const mngProf  = document.querySelector('.settings-container');
+const mngProf = document.querySelector('.settings-container');
 
 document.addEventListener('DOMContentLoaded', () => {
   const userEmail = localStorage.getItem('userEmail') || 'User';
   firstP.textContent = userEmail;
-
+  
   prbtn.addEventListener('click', () => {
     prof.classList.toggle('hidden');
     if (mngProf) mngProf.classList.add('hidden');
   });
-
+  
   manageCol.addEventListener('click', () => {
     prof.classList.add('hidden');
     if (mngProf) {
@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   logoutCol.addEventListener('click', () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userEmail');
     prof.classList.add('hidden');
     if (mngProf) mngProf.classList.add('hidden');
-    window.location.href = 'index.html';
     updateButtons();
   });
 });
