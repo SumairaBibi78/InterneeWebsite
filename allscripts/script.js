@@ -65,6 +65,9 @@ const bodySignIn     = bodyBtns.querySelector('.bcont:not(#dshbtn)');
 const bodyDash       = bodyBtns.querySelector('#dshbtn');
 const bodyJobPort    = bodyBtns.querySelector('.jpbtn');
 
+const jppage = document.getElementById('jppage');
+const allPages = document.querySelectorAll('.page');
+
 // 4) Show/hide based on auth state
 function updateButtons() {
   const signedIn = isUserSignedIn();
@@ -79,16 +82,31 @@ function updateButtons() {
   bodyDash   .classList.toggle('hidden', !signedIn);
 }
 
+function showPagejp(pageIds) {
+  allPages.forEach(pg => pg.classList.add('hidden'));
+  document.getElementById(pageIds).classList.remove('hidden');
+  localStorage.setItem('active', pageIds)
+}
+
 // 5) Job-Portal click logic: sign-in page if not signed in, otherwise go to the portal.
 function handleJobPortalClick(e) {
   e.preventDefault();  // prevent any inline navigation
-  if (isUserSignedIn()) { window.location.href = 'jobportal.html'; }
+  if (isUserSignedIn()) { 
+    showPagejp('jppage');
+    window.location.href = 'jobportal.html';
+  }
   else { window.location.href = 'signin.html'; }
 }
 
 // 6) Wire up event listeners
 document.addEventListener('DOMContentLoaded', () => {
   updateButtons();
+
+  //restore last seen page
+  const startupPage = localStorage.getItem('active');
+  if (startupPage && document.getElementById(startupPage)) {
+    showPagejp(startupPage);
+  }
 
   headerJobPort.addEventListener('click', handleJobPortalClick);
   bodyJobPort  .addEventListener('click', handleJobPortalClick);
@@ -115,6 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
   logoutCol.addEventListener('click', () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('active');
+
     profDiv.classList.add('hidden');
     if (mngProf) mngProf.classList.add('hidden');
     updateButtons();
