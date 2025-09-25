@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginEmailErr    = document.getElementById('loginEmailErr');
   const loginPassErr     = document.getElementById('loginPassErr');
   const loginSubmitBtn   = document.getElementById('loginSubmit');
+  const rememberMeChk    = document.getElementById('rememberMe');
 
   const signupEmailIn    = document.getElementById('signupEmail');
   const signupPassIn     = document.getElementById('signupPassword');
@@ -32,10 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showError(span, msg) {
     span.textContent = msg;
-    span.classList.remove('hidden');
+    span.classList.remove('hidden', 'noerr');
     span.classList.add('err');
-    span.classList.remove('noerr');
-    // focus the related input
     span.closest('.inputContainer').querySelector('input').focus();
     setTimeout(() => span.classList.add('hidden'), 3000);
   }
@@ -44,15 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
     span.textContent      = msg;
     span.classList.remove('hidden', 'err');
     span.classList.add('noerr');
-    // focus the related input
     span.closest('.inputContainer').querySelector('input').focus();
   }
 
   function clearSignupForm() {
     // clear values
-    signupEmailIn.value    = '';
-    signupPassIn.value     = '';
-    signupConfirmIn.value  = '';
+    signupEmailIn.value = signupPassIn.value = signupConfirmIn.value  = '';
     // hide & reset spans
     [ signupEmailErr, signupPassErr, signupConfirmErr ].forEach(s => {
       s.textContent = '';
@@ -60,13 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
       s.classList.remove('err','noerr');
     });
     // re-enable password inputs
-    signupPassIn.disabled   = false;
-    signupConfirmIn.disabled= false;
+    signupPassIn.disabled = signupConfirmIn.disabled = false;
   }
 
   function clearloginForm() {
-    loginEmailIn.value = '';
-    loginPassIn.value = '';
+    loginEmailIn.value = loginPassIn.value = '';
 
     // hide & reset spans
     [ loginEmailErr, loginPassErr ].forEach(s => {
@@ -89,13 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
       showSection(btn.dataset.target);
 
       // if user just switched to LOGIN, wipe out the Sign-Up form
-      if (btn.dataset.target === 'loginpg') {
-        clearSignupForm();
-      }
-      
-      if (btn.dataset.target === 'signuppg') {
-        clearloginForm();
-      }
+      if (btn.dataset.target === 'loginpg') { clearSignupForm(); }
+      if (btn.dataset.target === 'signuppg') { clearloginForm(); }
     });
   });
 
@@ -126,14 +115,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (val !== '' && val === storedEmail) {
       showSuccess(signupEmailErr, '✅ Account Already Exists!');
-      signupPassIn.disabled    = true;
-      signupConfirmIn.disabled = true;
+      signupPassIn.disabled = signupConfirmIn.disabled = true;
     } else {
       signupEmailErr.textContent = '';
       signupEmailErr.classList.add('hidden');
       signupEmailErr.classList.remove('noerr');
-      signupPassIn.disabled     = false;
-      signupConfirmIn.disabled  = false;
+      signupPassIn.disabled = signupConfirmIn.disabled  = false;
     }
   });
 
@@ -178,24 +165,65 @@ document.addEventListener('DOMContentLoaded', () => {
       signupConfirmErr.classList.add('err');
     } else {
       // matched! show green noerr for Confirm
-      signupConfirmErr.textContent      = '✅ Confirm Password Matches Password!';
-      signupConfirmErr.classList.remove('hidden','err');
-      signupConfirmErr.classList.add('noerr');
+      showSuccess(signupConfirmErr, '✅ Confirm Password Matches Password!')
 
       // hide the confirm‐success after 2 s
       setTimeout(() => {
         signupConfirmErr.classList.add('hidden');
         signupConfirmErr.classList.remove('noerr');
-      }, 2000);
+      }, 3000);
 
       // re‐show the password‐success below the Password field
-      signupPassErr.textContent         = '✅ Password Meets All Criteria!';
-      signupPassErr.classList.remove('hidden','err');
-      signupPassErr.classList.add('noerr');
+      showSuccess(signupPassErr, '✅ Password Meets All Criteria!');
     }
   });
 
-  // Sign-Up submit
+  // ─── SESSION CHECK & “JUST LOGGED OUT” ───────────────────────
+  if (sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn')  === 'true') {
+    window.location.href = 'dashboard.html';
+    return;
+  }
+
+  const justOut = sessionStorage.getItem('justLoggedOut') === 'true';
+  if (justOut) {
+    sessionStorage.removeItem('justLoggedOut');
+    clearloginForm();
+    rememberMeChk.checked = false;
+  }
+
+  // ─── DYNAMIC PRE-FILL LOGIN FIELDS + CLEAR ───────────────────────────────────
+  let loginPrefilled = false;
+
+  function prefillLoginFields() {
+    const storedEmail = localStorage.getItem('userEmail') || '';
+    const storedPass = localStorage.getItem('userPass')  || '';
+    loginEmailIn.value = storedEmail;
+    loginPassIn.value  = storedPass;
+    loginPrefilled = true;
+  }
+
+  //only fill when user focuses on input field
+  loginEmailIn.addEventListener('focus', prefillLoginFields, { once: true });
+  loginPassIn.addEventListener('focus', prefillLoginFields, { once: true });
+
+  //if user start typing, clear prefill; if types exactly the stored email, reshow prefill and its password.
+  loginEmailIn.addEventListener('input', () => {
+    const storedEmail = localStorage.getItem('userEmail') || '';
+
+    if (loginPrefilled) {
+      //user start typing: remove prefilled
+      const suffix = loginEmailIn.value.slice(storedEmail.length);
+      loginEmailIn.value = suffix;
+      loginPassIn.value = '';
+      loginPrefilled = false;
+    }
+    else if (loginEmailIn.value === storedEmail) {
+      //user typed same email as the stored on: re-prefill
+      prefillLoginFields();
+    }
+  });
+
+  // ─── Sign-Up SUBMIT ───────────────────────────────────
   signupSubmitBtn.addEventListener('click', () => {
     const email   = signupEmailIn.value.trim();
     const pass    = signupPassIn.value;
@@ -213,6 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     localStorage.setItem('userEmail', email);
     localStorage.setItem('userPass',  pass);
+
+    // choose session vs. persistent
+    if (rememberMeChk.checked) { localStorage.setItem('isLoggedIn','true'); }
+    else { sessionStorage.setItem('isLoggedIn','true'); }
+
     window.location.href = 'dashboard.html';
   });
 
@@ -223,20 +256,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const email       = loginEmailIn.value.trim();
     const pass        = loginPassIn.value;
 
-    if (!email) {
-      return showError(loginEmailErr, '❌ Email is Required!');
-    }
-    if (email !== storedEmail) {
-      return showError(loginEmailErr, '❌ Incorrect Email!');
-    }
+    if (!email) { return showError(loginEmailErr, '❌ Email is Required!'); }
+    if (email !== storedEmail) { return showError(loginEmailErr, '❌ Incorrect Email!'); }
 
-    if(!pass) {
-      return showError(loginPassErr, '❌ Password is Required!');
-    }
-    if (pass !== storedPass) {
-      return showError(loginPassErr, '❌ Incorrect Password!');
-    }
+    if(!pass) { return showError(loginPassErr, '❌ Password is Required!'); }
+    if (pass !== storedPass) { return showError(loginPassErr, '❌ Incorrect Password!'); }
+
+    if (rememberMeChk.checked) { localStorage.setItem('isLoggedIn','true'); }
+    else { sessionStorage.setItem('isLoggedIn','true'); }
 
     window.location.href = 'dashboard.html';
   });
 });
+//============================================ END OF SIGNLOG.js ==================================================

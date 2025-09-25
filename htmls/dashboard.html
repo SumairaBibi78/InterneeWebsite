@@ -60,12 +60,23 @@
                     <div class="section-group">
                         <h2>Email Addresses</h2>
                         <ul class="email-list" id="emailList"><!-- JS inject <li> items --></ul>
-                        <button class="add-btn" id="addEmailBtn">+ Add Email Address</button>
+                        <button class="add-btn" id="addEmailBtn" data-target="emailAdd">+ Add Email Address</button>
+                    </div>
+                    <div class="section-group hidden" id="emailAdd">
+                        <label for="newEmail">Email to Add</label>
+                        <div class="pwd-field">
+                            <input type="email" id="newmail" placeholder="Enter Email you want to Add"/>
+                            <button type="button" class="toggle-pwd" id="actAdd" data-target="newmail">➕</button>
+                            <span class="err hidden" id="newEmailErr"></span>
+                        </div>
                     </div>
                     <div class="section-group">
-                        <h2>Connected Accounts</h2>
-                        <ul class="account-list" id="accountList"><!-- Future Connected Account Entries --></ul>
-                        <button class="add-btn" id="connectAccountBtn">+ Connect Account</button>
+                        <div class="pwd-field" style="display: block !important;">
+                            <h2>Connected Accounts</h2>
+                            <ul class="account-list" id="accountList"><!-- Future Connected Account Entries --></ul>
+                            <button class="add-btn" id="connectAccountBtn">+ Connect Account</button>
+                            <span class="noerr hidden" id="connectAccSpan" style="left: 0;"></span>
+                        </div>
                     </div>
                 </section>
                 <section id="security" class="settings-section hidden">
@@ -75,6 +86,7 @@
                         <div class="pwd-field">
                             <input type="password" id="currentPwd" readonly/>
                             <button type="button" class="toggle-pwd" data-target="currentPwd" aria-label="Show/Hide Current Password">🙂</button>
+                            <span class="noerr hidden" id="currPassSpan"></span>
                         </div>
                     </div>
                     <div class="section-group">
@@ -82,13 +94,15 @@
                         <div class="pwd-field">
                             <input type="password" id="newPwd" placeholder="Enter New Password"/>
                             <button type="button" class="toggle-pwd" data-target="newPwd" aria-label="Show/Hide New Password">🙂</button>
+                            <span class="err hidden" id="newPassErr"></span>
                         </div>
                     </div>
                     <div class="section-group">
-                        <label for="confirmPwd">Confirm new password</label>
+                        <label for="confirmPwd">Confirm New Password</label>
                         <div class="pwd-field">
                             <input type="password" id="confirmPwd" placeholder="Re-enter new password" />
                             <button type="button" class="toggle-pwd" data-target="confirmPwd" aria-label="Show/Hide Confirm Password">🙂</button>
+                            <span class="err hidden" id="confPassErr"></span>
                         </div>
                     </div>
                     <button class="update-btn" id="updatePwdBtn">Update Password</button>
@@ -374,10 +388,6 @@
             <section class="maincontent hidden" id="rdmp">
                 <h1>Road Map</h1>
             </section>
-
-            <!-- <section class="maincontent hidden" id="latjbup">
-                <h1>Latest Job Updates</h1>
-            </section> -->
 
             <section class="maincontent hidden" id="buildres">
                 <h1>Build Resume</h1>

@@ -1,183 +1,253 @@
-//============================================ NAVIGATION AND SPINNER ==================================================
-document.addEventListener("DOMContentLoaded", () => {
-  const navItems = document.querySelectorAll(".nav-item");
-  const pages = document.querySelectorAll(".page");
-  const spinner = document.getElementById("spinner");
-  const storage_key = "currentPage";
+//================================ HEADER BUTTONS, BODY's HOME's BUTTON, NAVIGATION AND SPINNER ======================================
+document.addEventListener('DOMContentLoaded', () => {
+  // ─── ELEMENT REFERENCES ───────────────────────────────────────
+  const headerSignIn   = document.querySelector('.mainheader .sbtn');
+  const headerDashBtn  = document.querySelector('.mainheader #dshbtn');
+  const headerProfile  = document.querySelector('.mainheader #prbtn');
+  const bodySignIn     = document.querySelector('#bodyBtns .bcont:not(#dshbtn)');
+  const bodyDashBtn    = document.querySelector('#bodyBtns #dshbtn');
 
-  function showPage(pageId) {
-    spinner.classList.remove("hidden");
+  const navItems       = document.querySelectorAll('.mainheader .nav-item');
+  const headerJobBtns  = document.querySelectorAll('.mainheader .jpbtn');
+  const bodyJobBtns    = document.querySelectorAll('#bodyBtns .jpbtn');
 
+  const spinner        = document.getElementById('spinner');
+  const pages          = document.querySelectorAll('.page');
+
+  // ─── SESSION & PAGE STATE ────────────────────────────────────  
+  const isLoggedIn = (
+    sessionStorage.getItem('isLoggedIn') === 'true' ||
+    localStorage.getItem('isLoggedIn')   === 'true'
+  );
+
+  // if the URL has a hash (e.g. #jppage), and we have a matching <div id="jppage">,
+  // use that; otherwise fall back to sessionStorage or default to 'home'
+  const hashPage = window.location.hash.slice(1);
+  let currentPage = 'home';
+  if (hashPage && document.getElementById(hashPage)) { currentPage = hashPage; }
+  else { currentPage = sessionStorage.getItem('currentPage') || 'home'; }
+
+  // if signed-out user on restricted pages
+  if (!isLoggedIn && (currentPage === 'internship' || currentPage === 'jppage')) {
+    currentPage = 'home';
+    sessionStorage.setItem('currentPage', 'home');
+  }
+
+  // ─── UI INITIAL STATE ────────────────────────────────────────
+  function updateAuthUI() {
+    if (isLoggedIn) {
+      headerSignIn.classList.add('hidden');
+      bodySignIn.classList.add('hidden');
+      headerDashBtn.classList.remove('hidden');
+      bodyDashBtn.classList.remove('hidden');
+      headerProfile.classList.remove('hidden');
+    } else {
+      headerSignIn.classList.remove('hidden');
+      bodySignIn.classList.remove('hidden');
+      headerDashBtn.classList.add('hidden');
+      bodyDashBtn.classList.add('hidden');
+      headerProfile.classList.add('hidden');
+    }
+  }
+
+  function hideAllPages() {
+    pages.forEach(p => p.classList.add('hidden'));
+    navItems.forEach(a => a.classList.remove('active'));
+  }
+
+  function showPage(id) {
+    hideAllPages();
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('hidden');
+    // highlight nav-item if it matches
+    const nav = document.querySelector(`.nav-item[data-page="${id}"]`);
+    if (nav) nav.classList.add('active');
+    sessionStorage.setItem('currentPage', id);
+  }
+
+  // initial render without spinner
+  updateAuthUI();
+  showPage(currentPage);
+
+  // ─── NAVIGATION HANDLER ─────────────────────────────────────
+  function navigateTo(page) {
+    // restricted pages
+    if ((page === 'internship' || page === 'jppage') && !isLoggedIn) {
+      window.location.href = 'signin.html';
+      return;
+    }
+
+    //hide visible content
+    pages.forEach(p => p.classList.add('hidden'));
+    navItems.forEach(a => a.classList.remove('active'));
+    
+    // show spinner fullscreen
+    spinner.classList.remove('hidden');
     setTimeout(() => {
-      pages.forEach(p => p.classList.add("hidden"));
-      document.getElementById(pageId).classList.remove("hidden");
-      spinner.classList.add("hidden");
-    }, 300); // Simulate loading delay
-  }
-
-  function setActiveNav(pageId) {
-    navItems.forEach(i => {
-      i.classList.toggle("active", i.dataset.page === pageId);
-    });
-  }
-
-  navItems.forEach(item => {
-    item.addEventListener("click", e => {
-      e.preventDefault();
-      
-      const page = item.dataset.page;
-
-      if (page === 'internship' && !isUserSignedIn()) { window.location.href = "signin.html"; return; }
-      setActiveNav(page);
+      spinner.classList.add('hidden');
       showPage(page);
+    }, 1000);
+  }
 
-      localStorage.setItem(storage_key, page);
+  // home / gradprog / stambassador all use nav‐items
+  // click on nav‐item links
+  navItems.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      navigateTo(a.dataset.page);
     });
   });
 
-  const savedPage = localStorage.getItem(storage_key) || "home";
-  setActiveNav(savedPage);
-  showPage(savedPage);
-});
+  // header job‐portal button
+  headerJobBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      navigateTo(btn.dataset.page);
+    });
+  });
 
-//===================================== SIGN IN, DASHBOARD AND PROFILE BUTTON ===========================================
-// 1) Your auth‐check
-function isUserSignedIn() { return !!localStorage.getItem('authToken'); }
+  // body job‐portal button
+  bodyJobBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      navigateTo(btn.dataset.page);
+    });
+  });
 
-// 2) Cache the two containers
-const headBtns = document.getElementById('headBtns');
-const bodyBtns   = document.getElementById('bodyBtns');
-
-// 3) Pull out the individual buttons
-const headerSignIn   = headBtns.querySelector('.sbtn');
-const headerDash     = headBtns.querySelector('.dbtn');
-const headerProfile  = headBtns.querySelector('.prbtn');
-const headerJobPort  = headBtns.querySelector('.jpbtn');
-const profDiv  = document.querySelector('.prof');
-const cols     = profDiv.querySelectorAll('.cols');
-const firstP   = cols[0].querySelector('p');
-const manageCol= cols[1];
-const logoutCol= cols[2];
-const overlay = document.querySelector('.overlay');
-const mngProf  = document.querySelector('.settings-container');
-
-const bodySignIn     = bodyBtns.querySelector('.bcont:not(#dshbtn)');
-const bodyDash       = bodyBtns.querySelector('#dshbtn');
-const bodyJobPort    = bodyBtns.querySelector('.jpbtn');
-
-const jppage = document.getElementById('jppage');
-const allPages = document.querySelectorAll('.page');
-
-// 4) Show/hide based on auth state
-function updateButtons() {
-  const signedIn = isUserSignedIn();
-
-  // Header
-  headerSignIn.classList.toggle('hidden', signedIn);
-  headerDash  .classList.toggle('hidden', !signedIn);
-  if (headerProfile) { headerProfile.classList.toggle('hidden', !signedIn); }
-
-  // Body
-  bodySignIn .classList.toggle('hidden', signedIn);
-  bodyDash   .classList.toggle('hidden', !signedIn);
-}
-
-function showPagejp(pageIds) {
-  allPages.forEach(pg => pg.classList.add('hidden'));
-  document.getElementById(pageIds).classList.remove('hidden');
-  localStorage.setItem('active', pageIds)
-}
-
-// 5) Job-Portal click logic: sign-in page if not signed in, otherwise go to the portal.
-function handleJobPortalClick(e) {
-  e.preventDefault();  // prevent any inline navigation
-  if (isUserSignedIn()) { 
-    showPagejp('jppage');
-    window.location.href = 'jobportal.html';
-  }
-  else { window.location.href = 'signin.html'; }
-}
-
-// 6) Wire up event listeners
-document.addEventListener('DOMContentLoaded', () => {
-  updateButtons();
-
-  //restore last seen page
-  const startupPage = localStorage.getItem('active');
-  if (startupPage && document.getElementById(startupPage)) {
-    showPagejp(startupPage);
-  }
-
-  headerJobPort.addEventListener('click', handleJobPortalClick);
-  bodyJobPort  .addEventListener('click', handleJobPortalClick);
-
+  // ─── SIGN-IN & DASHBOARD BUTTONS ────────────────────────────
   headerSignIn.addEventListener('click', () => { window.location.href = 'signin.html'; });
   bodySignIn.addEventListener('click', () => { window.location.href = 'signin.html'; });
 
-  const userEmail = localStorage.getItem('userEmail') || 'User';
-  firstP.textContent = userEmail;
+  headerDashBtn.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
+  bodyDashBtn.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
 
-  prbtn.addEventListener('click', () => {
-    profDiv.classList.toggle('hidden');
-    if (mngProf) mngProf.classList.add('hidden');
-  });
-
-  manageCol.addEventListener('click', () => {
-    profDiv.classList.add('hidden');
-    if (mngProf) {
-      overlay.classList.remove('hidden');
-      mngProf.classList.remove('hidden');
+  // ─── LOGOUT REDIRECT ON RELOAD IF NECESSARY ─────────────────
+  // if user signed out while on restricted page
+  window.addEventListener('storage', () => {
+    const nowLoggedIn = (
+      sessionStorage.getItem('isLoggedIn') === 'true' ||
+      localStorage.getItem('isLoggedIn')   === 'true'
+    );
+    if (!nowLoggedIn && ['internship','jppage'].includes(sessionStorage.getItem('currentPage'))) {
+      showPage('home');
     }
-  });
-
-  logoutCol.addEventListener('click', () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('active');
-
-    profDiv.classList.add('hidden');
-    if (mngProf) mngProf.classList.add('hidden');
-    updateButtons();
   });
 });
 
-//========================================= MANAGE PROFILE DIV ===============================================
+//=============================== PROFILE BUTTON, PROF DIV, MANAGE PROFILE DIV ====================================
 document.addEventListener('DOMContentLoaded', () => {
-  // TAB NAVIGATION
-  const navBtns = document.querySelectorAll('.nav-btn');
-  const sections = document.querySelectorAll('.settings-section');
-  const closeBtn = document.getElementById('closeSettings');
+  // ─── ELEMENT GRABS ───────────────────────────────────────────
+  const prbtn              = document.getElementById('prbtn');
+  const prof               = document.querySelector('.prof');
+  const overlay            = document.querySelector('.overlay');
+  const settingsContainer  = document.getElementById('settingsContainer');
+  const closeBtn           = document.getElementById('closeSettings');
 
-  closeBtn.addEventListener('click', () => {
-    mngProf.classList.add('hidden');
+  // three “columns” in the prof menu
+  const [emailCol, manageCol, signoutCol] = prof.querySelectorAll('.cols');
+
+  // settings‐tabs
+  const tabBtns  = settingsContainer.querySelectorAll('.nav-btn');
+  const sections = settingsContainer.querySelectorAll('.settings-section');
+
+  // PROFILE‐section
+  const emailListEl   = document.getElementById('emailList');
+  const addEmailBtn   = document.getElementById('addEmailBtn');
+  const emailAddGroup = document.getElementById('emailAdd');
+  const newmailInput  = document.getElementById('newmail');
+  const newEmailErr   = document.getElementById('newEmailErr');
+  const actAddBtn     = document.getElementById('actAdd');
+
+  // “Connect Account” feedback
+  const connectAccountBtn = document.getElementById('connectAccountBtn');
+  const connectAccSpan    = document.getElementById('connectAccSpan');
+
+  // SECURITY‐section
+  const currPwdInput    = document.getElementById('currentPwd');
+  const currPassSpan    = document.getElementById('currPassSpan');
+  const newPwdInput     = document.getElementById('newPwd');
+  const newPassErr      = document.getElementById('newPassErr');
+  const confirmPwdInput = document.getElementById('confirmPwd');
+  const confPassErr     = document.getElementById('confPassErr');
+  const updatePwdBtn    = document.getElementById('updatePwdBtn');
+
+  // stored credentials
+  const userEmail = localStorage.getItem('userEmail') || '';
+  const userPass  = localStorage.getItem('userPass')  || '';
+
+  // ─── HELPERS ─────────────────────────────────────────────────
+  function showError(span, msg) {
+    span.textContent = msg;
+    span.classList.remove('hidden','noerr');
+    span.classList.add('err');
+  }
+
+  function showSuccess(span, msg) {
+    span.textContent = msg;
+    span.classList.remove('hidden','err');
+    span.classList.add('noerr');
+  }
+
+  function closeSettings() {
+    settingsContainer.classList.add('hidden');
     overlay.classList.add('hidden');
+  }
+
+  // ─── “PROFILE” MENU (prbtn) ─────────────────────────────────
+  prbtn.addEventListener('click', e => {
+    prof.classList.toggle('hidden');
   });
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) {
-      mngProf.classList.add('hidden');
-      overlay.classList.add('hidden');
+
+  // click outside hides the prof menu
+  document.addEventListener('click', e => {
+    if (!prof.contains(e.target) && e.target !== prbtn) {
+      prof.classList.add('hidden');
     }
   });
 
-  navBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      navBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  // fill first column with the logged‐in email
+  emailCol.querySelector('p').textContent = userEmail;
 
+  // second column: open settings
+  manageCol.addEventListener('click', () => {
+    overlay.classList.remove('hidden');
+    settingsContainer.classList.remove('hidden');
+    prof.classList.add('hidden');
+  });
+
+  // third column: sign out
+  signoutCol.addEventListener('click', () => {
+    sessionStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = 'index.html';
+  });
+
+  // ─── CLOSE SETTINGS ──────────────────────────────────────────
+  closeBtn.addEventListener('click', closeSettings);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeSettings();
+  });
+
+  // ─── TABS INSIDE SETTINGS ───────────────────────────────────
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       const target = btn.dataset.target;
-      sections.forEach(sec => {
-        sec.classList.toggle('hidden', sec.id !== target);
-      });
+      sections.forEach(sec => sec.classList.toggle('hidden', sec.id !== target));
     });
   });
 
-  // PROFILE SECTION JS (emails + accounts)
-  const emailListEl = document.getElementById('emailList');
-  const addEmailBtn = document.getElementById('addEmailBtn');
+  // ─── PROFILE SECTION: EMAIL LIST ─────────────────────────────
   let emails = JSON.parse(localStorage.getItem('emails') || '[]');
   if (!emails.length) {
-    emails = [{ address: 'user@example.com', primary: true }];
+    emails = [{ address: userEmail, primary: true }];
   }
+  
+  // always keep the correct email marked primary
+  emails = emails.map(e => ({
+    address: e.address,
+    primary: e.address === userEmail
+  }));
+
   function renderEmails() {
     emailListEl.innerHTML = '';
     emails.forEach(e => {
@@ -193,54 +263,136 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     localStorage.setItem('emails', JSON.stringify(emails));
   }
-  addEmailBtn.addEventListener('click', () => {
-    const input = prompt('Enter new email address:');
-    if (input && /\S+@\S+\.\S+/.test(input)) {
-      emails.push({ address: input, primary: false });
-      renderEmails();
-    } else if (input) {
-      alert('Please enter a valid email.');
-    }
-  });
   renderEmails();
 
-  // Placeholder handlers for other buttons
-  document.getElementById('connectAccountBtn')
-    .addEventListener('click', () => {
-      alert('Connect account feature coming soon!');
-    });
-  document.getElementById('updateProfileBtn')
-    .addEventListener('click', () => {
-      alert('Update profile feature coming soon!');
-    });
+  // show the “add email” form
+  addEmailBtn.addEventListener('click', () => {
+    emailAddGroup.classList.remove('hidden');
+  });
 
-  // SECURITY SECTION JS
-  const toggleButtons = document.querySelectorAll('.toggle-pwd');
-  toggleButtons.forEach(btn => {
+  // live validation on new email
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  newmailInput.addEventListener('input', () => {
+    const v = newmailInput.value.trim();
+    if (!v) {
+      newEmailErr.classList.add('hidden');
+      return;
+    }
+    if (!emailRe.test(v)) { showError(newEmailErr, '❌ Enter Valid Email!'); }
+    else if (emails.some(e => e.address === v)) { showSuccess(newEmailErr, '✅ Email Already Exists!'); }
+    else { showSuccess(newEmailErr, '✅ Email Validates!'); }
+  });
+
+  // commit adding a new email
+  actAddBtn.addEventListener('click', () => {
+    const v = newmailInput.value.trim();
+    if (!v)             { showError(newEmailErr, '❌ Email is Required!'); return; }
+    if (!emailRe.test(v)){ showError(newEmailErr, '❌ Enter Valid Email!'); return; }
+    if (emails.some(e => e.address === v)) {
+      showSuccess(newEmailErr, '✅ Email Already Exists!');
+      return;
+    }
+
+    emails.push({ address: v, primary: false });
+    renderEmails();
+    showSuccess(newEmailErr, '✅ Email Successfully Added!');
+    setTimeout(() => newEmailErr.classList.add('hidden'), 3000);
+    emailAddGroup.classList.add('hidden');
+    newmailInput.value = '';
+  });
+
+  // “Connect Account” placeholder
+  connectAccountBtn.addEventListener('click', () => {
+    showSuccess(connectAccSpan, '✅ Connect Account Feature Coming Soon!');
+    setTimeout(() => connectAccSpan.classList.add('hidden'), 3000);
+  });
+
+  // ─── SECURITY SECTION ────────────────────────────────────────
+  // populate current password
+  currPwdInput.value = userPass;
+
+  // clicking currentPwd shows “not editable”
+  currPwdInput.addEventListener('focus', () => {
+    showSuccess(currPassSpan, '✅ Not editable!');
+    setTimeout(() => currPassSpan.classList.add('hidden'), 3000);
+  });
+
+  // toggle‐pwd buttons (only for password fields)
+  document.querySelectorAll('.toggle-pwd').forEach(btn => {
+    const tgt = document.getElementById(btn.dataset.target);
+    if (!tgt || (tgt.type !== 'password' && tgt.type !== 'text')) return;
     btn.addEventListener('click', () => {
-      const input = document.getElementById(btn.dataset.target);
-      const isPwd  = input.type === 'password';
-      input.type  = isPwd ? 'text' : 'password';
-      btn.textContent = isPwd ? '😊' : '🙂';
+      const reveal = tgt.type === 'password';
+      tgt.type = reveal ? 'text' : 'password';
+      btn.textContent = reveal ? '😊' : '🙂';
     });
   });
 
-  const updatePwdBtn = document.getElementById('updatePwdBtn');
+  // new password live validation
+  const hasLower  = /[a-z]/;
+  const hasUpper  = /[A-Z]/;
+  const hasNumber = /\d/;
+  const hasSymbol = /[^A-Za-z0-9]/;
+
+  newPwdInput.addEventListener('input', () => {
+    const v = newPwdInput.value;
+    let err = '';
+    if (v.length < 8)           err = '❌ Must be At least 8 characters!';
+    else if (v.length > 12)     err = '❌ Must be At most 12 characters!';
+    else if (!hasUpper.test(v))  err = '❌ Must include Uppercase!';
+    else if (!hasLower.test(v))  err = '❌ Must include Lowercase!';
+    else if (!hasNumber.test(v)) err = '❌ Must include Number!';
+    else if (!hasSymbol.test(v)) err = '❌ Must include Symbol!';
+
+    if (err) showError(newPassErr, err);
+    else      showSuccess(newPassErr, '✅ New Password Meets All Criteria!');
+  });
+
+  // on focus of confirm, hide new‐pwd success
+  confirmPwdInput.addEventListener('focus', () => {
+    if (newPassErr.classList.contains('noerr')) {
+      newPassErr.classList.add('hidden');
+      newPassErr.classList.remove('noerr');
+    }
+  });
+
+  // confirm‐password live match check
+  confirmPwdInput.addEventListener('input', () => {
+    const a = newPwdInput.value;
+    const b = confirmPwdInput.value;
+    if (a !== b) {
+      showError(confPassErr, '❌ Passwords do not Match!');
+    } else {
+      showSuccess(confPassErr, '✅ Passwords Match!');
+      showSuccess(newPassErr, '✅ New Password Meets All Criteria!');
+    }
+  });
+
+  // update password handler
   updatePwdBtn.addEventListener('click', () => {
-    const newPwd = document.getElementById('newPwd').value.trim();
-    const confirmPwd = document.getElementById('confirmPwd').value.trim();
-    if (!newPwd || !confirmPwd) {
-      alert('Please fill out both new password fields.');
+    const a = newPwdInput.value.trim();
+    const b = confirmPwdInput.value.trim();
+    if (!a || !b) {
+      showError(newPassErr, '❌ Please fill out both Password Fields!');
+      showError(confPassErr, '❌ Please fill out both Password Fields!');
       return;
     }
-    if (newPwd !== confirmPwd) {
-      alert('New passwords do not match.');
+    if (a !== b) {
+      showError(confPassErr, '❌ Passwords do not Match!');
       return;
     }
-    // Simulate an update
-    alert('Your password has been updated successfully!');
-    document.getElementById('newPwd').value = '';
-    document.getElementById('confirmPwd').value = '';
+
+    // persist and replace currentPwd
+    localStorage.setItem('userPass', a);
+    currPwdInput.value = a;
+    showSuccess(currPassSpan, '✅ Password Updated!');
+    setTimeout(() => currPassSpan.classList.add('hidden'), 3000);
+
+    // clear inputs & errors
+    newPwdInput.value     = '';
+    confirmPwdInput.value = '';
+    newPassErr.classList.add('hidden');
+    confPassErr.classList.add('hidden');
   });
 });
 
@@ -314,4 +466,4 @@ document.addEventListener('DOMContentLoaded', () => {
   if (saved && sections[saved]) { selectCategory(saved); }
 });
 
-//============================================ new js ==================================================
+//============================================ END OF SCRIPT.js ==================================================
