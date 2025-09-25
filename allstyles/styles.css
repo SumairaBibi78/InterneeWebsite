@@ -281,6 +281,19 @@ footer {
       transition: background 0.2s;
     }
     .update-btn:hover { background: green; }
+
+    .err {
+      color: red; background: var(--error-bg); top: 85%; padding: none;
+      border: 1px solid var(--error-border); border-radius: 10px;
+      font-size: 0.8rem; width: 100%; position: absolute;
+      text-align: center;
+    }
+    .noerr {
+      color: rgb(39, 81, 39); background: rgba(86, 209, 75, 0.342);; top: 85%; padding: none;
+      border: 1px solid rgba(75, 209, 91, 0.856); border-radius: 10px;
+      font-size: 0.8rem; width: 100%; position: absolute;
+      text-align: center;
+    }
   }
 }
 
@@ -765,6 +778,13 @@ footer {
       }
       .inputField:focus {outline: none; border-bottom: 2px solid teal;}
       .inputField::placeholder {color: rgb(80, 80, 80); font-size: 1em; font-weight: 500;}
+
+      label {
+        width: 100%;
+        color: rgb(1, 70, 70); font-size: 0.9rem;
+        justify-content: center; display: flex; gap: 2%;
+        #rememberMe { cursor: pointer; }
+      }
 
       .err {
         color: red; background: var(--error-bg); top: 85%; padding: none;
